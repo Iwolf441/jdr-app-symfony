@@ -15,4 +15,10 @@ class DefaultController extends AbstractController
     public function home(): Response {
         return $this->render('/pages/games.html.twig');
     }
+    /**
+     * @Route("/book",name="viewBook")
+     */
+    public function viewBook(): Response{
+        return new Response("<div>THIS IS THE NEW SHIT </div>");
+    }
 }
