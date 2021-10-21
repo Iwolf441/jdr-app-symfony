@@ -1,0 +1,122 @@
+{% extends "layouts/user.html.twig" %}
+
+ {% block content %}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Collection de Jean-Charles</h4>
+        </div>
+        <div class="card-body">
+            <div id="accordion-one" class="accordion">
+                <div class="accordion__item">
+                    <div class="accordion__header" data-toggle="collapse" data-target="#default_collapseOne">
+                        <span class="accordion__header--text">Donjon et dragons</span>
+                        <span class="accordion__header--indicator"></span>
+                    </div>
+                    <div id="default_collapseOne" class="collapse accordion__body show"
+                         data-parent="#accordion-one">
+                        <table class="table table-responsive-sm">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="livre.html">Manuel du joueur</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Manuel des monstres</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La barovie</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La malédiction de Strahd</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion__item">
+                    <div class="accordion__header collapsed" data-toggle="collapse"
+                         data-target="#default_collapseTwo">
+                        <span class="accordion__header--text">Vampire : La mascarade</span>
+                        <span class="accordion__header--indicator"></span>
+                    </div>
+                    <div id="default_collapseTwo" class="collapse accordion__body" data-parent="#accordion-one">
+                        <table class="table table-responsive-sm">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="livre.html">Manuel du joueur</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Manuel des monstres</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La barovie</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La malédiction de Strahd</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion__item">
+                    <div class="accordion__header collapsed" data-toggle="collapse"
+                         data-target="#default_collapseThree">
+                        <span class="accordion__header--text">Warhammer</span>
+                        <span class="accordion__header--indicator"></span>
+                    </div>
+                    <div id="default_collapseThree" class="collapse accordion__body"
+                         data-parent="#accordion-one">
+                        <table class="table table-responsive-sm">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="livre.html">Manuel du joueur</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Manuel des monstres</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La barovie</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">La malédiction de Strahd</a></td>
+                                <td><a href="#"><i class="icon-trash"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}

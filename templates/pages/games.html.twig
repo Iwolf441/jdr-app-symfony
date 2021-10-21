@@ -1,1 +1,71 @@
-{% extends "layouts/games.html.twig" %}
+{% extends "layouts/user.html.twig" %}
+
+ {% block content %}
+     <div class="container-fluid">
+         <div class="row">
+             <div class="col-lg-12">
+                 <div class="card">
+                     <div class="card-header">
+                         <h4 class="card-title">Liste des jeux</h4>
+                     </div>
+                     <div class="card-body">
+                         <p>Pas dans la liste ? <a class="text-primary" href="login.html">Ajoutez-le !</a></p>
+                         <div class="table-responsive">
+                             <table class="table table-responsive-sm">
+                                 <thead>
+                                 <tr>
+                                     <th>Name</th>
+                                 </tr>
+                                 </thead>
+                                 <tbody>
+                                 <tr>
+                                     <td><a href="jeu.html">Albator RPG</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Donjon et dragons 3</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Donjon et dragons 4</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Donjon et dragons 5</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Pathfinder</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Tiny</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Shadowrun </a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Starfinder</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Tiny </a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Trinités</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Vampire : La mascarade</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Warhammer V2</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Warhammer V4</a></td>
+                                 </tr>
+                                 <tr>
+                                     <td><a href="#">Zore</a></td>
+                                 </tr>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+    {% endblock content %}

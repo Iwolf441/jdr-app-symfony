@@ -1,8 +1,5 @@
 (function($) {
     "use strict";
-
-
-
     // Morris bar chart
     Morris.Bar({
         element: 'morris-bar-chart',
@@ -121,7 +118,6 @@
                     "rgba(89, 59, 219, .5)",
                     "rgba(89, 59, 219, .07)"
                 ]
-
             }],
             labels: [
                 "one",
@@ -136,9 +132,6 @@
             maintainAspectRatio: false
         }
     });
-
-
-
 })(jQuery);
 
 (function($) {
@@ -233,9 +226,7 @@
 
     update();
 
-
 })(jQuery);
-
 
 const wt = new PerfectScrollbar('.widget-todo');
 const wtl = new PerfectScrollbar('.widget-timeline');

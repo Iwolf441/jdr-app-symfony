@@ -1,0 +1,52 @@
+{% extends "layouts/user.html.twig" %}
+
+ {% block content %}
+     <div class="container-fluid">
+         <div class="card">
+             <div class="card-header">
+                 <h4 class="card-title">Profil de Jean-Charles</h4>
+             </div>
+             <div class="card-body">
+                 <div class="profile-photo">
+                     <img src="{{ asset("/images/profile/profile.png") }}" class="img-fluid rounded-circle" alt="">
+                 </div>
+                 <br>
+                 <h4>Statistiques</h4>
+                 <a href="collection.html">Votre collection</a>
+                 <p> Vous avez 5 livres <br>
+                     Vous avez 3 jeux</p>
+                 <h4>Vos informations personelles</h4>
+                 <div>Adresse mail : jean.charles@gmail.com</div>
+                 <div>Inscrit depuis le 01/01/2020</div>
+                 <br>
+                 <h5>Changer de mot de passe</h5>
+                 <form>
+                     <div class="form-group row">
+                         <label class="col-sm-2 col-form-label">Mot de passe actuel</label>
+                         <div class="col-sm-10">
+                             <input type="password" class="form-control" placeholder="Password">
+                         </div>
+                     </div>
+                     <div class="form-group row">
+                         <label class="col-sm-2 col-form-label">Nouveau mot de passe</label>
+                         <div class="col-sm-10">
+                             <input type="password" class="form-control" placeholder="Password">
+                         </div>
+                     </div>
+                     <div class="form-group row">
+                         <label class="col-sm-2 col-form-label">Confirmation</label>
+                         <div class="col-sm-10">
+                             <input type="password" class="form-control" placeholder="Password">
+                         </div>
+                     </div>
+                     <div class="form-group row">
+                         <div class="col-sm-10">
+                             <button type="submit" class="btn btn-primary">Changer</button>
+                         </div>
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+
+ {% endblock content %}

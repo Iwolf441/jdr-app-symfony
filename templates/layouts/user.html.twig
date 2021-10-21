@@ -5,11 +5,14 @@
     <link href=" {{ asset('/vendor/jqvmap/css/jqvmap.min.css') }}" rel="stylesheet">
     <link href=" {{ asset('/css/style.css')}}" rel="stylesheet">
 {% endblock stylesheets %}
-
  {% block javascripts %}
+
+     <script src="{{ asset("/vendor/global/global.min.js")}}"></script>
+     <script src="{{ asset("/js/quixnav-init.js")}}"></script>
+     <script src="{{ asset("./js/custom.min.js")}}"></script>
+
      <script src=" {{ asset('/vendor/raphael/raphael.min.js') }}"></script>
      <script src="{{ asset('/vendor/morris/morris.min.js') }}"></script>
-
 
      <script src="{{ asset('/vendor/circle-progress/circle-progress.min.js') }}"></script>
      <script src="{{ asset('/vendor/chart.js/Chart.bundle.min.js') }}"></script>
@@ -58,7 +61,7 @@
                  <nav class="navbar navbar-expand">
                      <div class="collapse navbar-collapse justify-content-between">
                          <div class="header-left">
-                             <a href="index.html">
+                             <a href="/">
                                  <div class="logo">Jdr App</div>
                              </a>
                              <div class="search_bar dropdown">
@@ -80,7 +83,7 @@
                                      <i class="mdi mdi-account"></i>
                                  </a>
                                  <div class="dropdown-menu dropdown-menu-right">
-                                     <a href="./app-profile.html" class="dropdown-item">
+                                     <a href="/profil" class="dropdown-item">
                                          <i class="icon-user"></i>
                                          <span class="ml-2">Profile </span>
                                      </a>
@@ -107,73 +110,8 @@
              Content body start
          ***********************************-->
          <div class="content-body">
-             <div class="container-fluid">
-                 <div class="row">
-                     <div class="col-lg-12">
-                         <div class="card">
-                             <div class="card-header">
-                                 <h4 class="card-title">Liste des jeux</h4>
-                             </div>
-                             <div class="card-body">
-                                 <p>Pas dans la liste ? <a class="text-primary" href="login.html">Ajoutez-le !</a></p>
-                                 <div class="table-responsive">
-                                     <table class="table table-responsive-sm">
-                                         <thead>
-                                         <tr>
-                                             <th>Name</th>
-                                         </tr>
-                                         </thead>
-                                         <tbody>
-                                         <tr>
-                                             <td><a href="jeu.html">Albator RPG</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Donjon et dragons 3</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Donjon et dragons 4</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Donjon et dragons 5</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Pathfinder</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Tiny</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Shadowrun </a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Starfinder</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Tiny </a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Trinités</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Vampire : La mascarade</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Warhammer V2</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Warhammer V4</a></td>
-                                         </tr>
-                                         <tr>
-                                             <td><a href="#">Zore</a></td>
-                                         </tr>
-                                         </tbody>
-                                     </table>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+           {% block content %}
+             {% endblock content %}
              <!--**********************************
                  Content body end
              ***********************************-->

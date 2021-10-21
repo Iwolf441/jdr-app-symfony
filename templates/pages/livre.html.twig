@@ -1,0 +1,108 @@
+{% extends "layouts/user.html.twig" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Fizzban : Treasury of dragons</h4>
+                    </div>
+                    <img src="{{ asset("/images/covers/fizzban.jpeg") }}" width="150px" height="300px" class="cover-book">
+                    <div class="col-12">
+                        <div>Genre : Règles</div>
+                        <div>Date de sortie : 15/01/2022</div>
+                        <div>Editeur : Wizard of the coast</div>
+                        <p> Description</p>
+                        <p>Fizzban : Treasury of dragon est un manuel rempli de dragons en tout genre. Vous y
+                            trouverez de
+                            nouveaux monstres de la famille draconique, des nouvelles options de personnage comme
+                            des sous-classes ou de nouveaux dons.</p>
+                    </div>
+                    <div class="card-body">
+                        <h4>Commentaires</h4>
+                        <div class="recent-comment m-t-15">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/4.png"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-primary">john doe</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <p class="comment-date">10 min ago</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/2.png"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-success">Mr. John</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla. Cras sit amet nibh libero, in
+                                        gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras sit amet nibh
+                                        libero, in gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras
+                                        sit amet nibh libero, in gravida nulla.Cras sit amet nibh libero, in gravida
+                                        nulla.Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <p class="comment-date">1 hour ago</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png") }}"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-danger">Mr. John</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <div class="comment-date">Yesterday</div>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/4.png") }}"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-primary">john doe</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <p class="comment-date">10 min ago</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-success">Mr. John</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <p class="comment-date">1 hour ago</p>
+                                </div>
+                            </div>
+                            <div class="media no-border">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png")}}"
+                                                     alt="..."></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading text-info">Mr. John</h4>
+                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
+                                    <div class="comment-date">Yesterday</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>Ajouter un commentaire</h4>
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

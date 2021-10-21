@@ -24,19 +24,15 @@
     border-top: (2 * $table-border-width) solid $table-border-color;
   }
 }
-
-
 //
 // Condensed table w/ half padding
 //
-
 .table-sm {
   th,
   td {
     padding: $table-cell-padding-sm;
   }
 }
-
 
 // Border versions
 //
