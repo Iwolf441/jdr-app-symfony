@@ -1,4 +1,29 @@
-{% extends "layouts/user.html.twig" %}
+{% extends "layouts/offline.html.twig" %}
 
-{% block content %}
-{% endblock content %}
+  {% block content %}
+      <h4 class="text-center mb-4">Inscrivez-vous</h4>
+      <form action="index.html">
+          <div class="form-group">
+              <label><strong>Pseudo</strong></label>
+              <input type="text" class="form-control" placeholder="pseudo">
+          </div>
+          <div class="form-group">
+              <label><strong>Email</strong></label>
+              <input type="email" class="form-control" placeholder="pseudo@example.com">
+          </div>
+          <div class="form-group">
+              <label><strong>Mot de passe</strong></label>
+              <input type="password" class="form-control" value="Password">
+          </div>
+          <div class="form-group">
+              <label><strong>Confirmation du mot de passe</strong></label>
+              <input type="password" class="form-control" value="Password">
+          </div>
+          <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+          </div>
+      </form>
+      <div class="new-account mt-3">
+          <p>Déja un compte ? <a class="text-primary" href="login.html">Connectez-vous</a></p>
+      </div>
+  {% endblock content %}

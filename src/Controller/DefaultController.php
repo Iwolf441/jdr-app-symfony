@@ -33,21 +33,18 @@ class DefaultController extends AbstractController
     public function collection(): Response{
         return $this->render('/pages/collection.html.twig');
     }
-
     /**
      * @Route("/formJeu",name="formJeu")
      */
     public function formJeu(): Response{
         return $this->render('/pages/formjeu.html.twig');
     }
-
     /**
      * @Route("/formLivre",name="formLivre")
      */
     public function formLivre(): Response{
         return $this->render('/pages/formlivre.html.twig');
     }
-
     /**
      * @Route("/jeu",name="jeu")
      */
@@ -66,7 +63,6 @@ class DefaultController extends AbstractController
     public function login(): Response{
         return $this->render('/pages/login.html.twig');
     }
-
     /**
      * @Route("/signup",name="inscription")
      */
