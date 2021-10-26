@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,22 @@ class User
      * @ORM\Column(type="date")
      */
     private $inscriptionDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=book::class)
+     */
+    private $collection;
+
+    /**
+     * @ORM\OneToMany(targetEntity=commentary::class, mappedBy="user")
+     */
+    private $commentaries;
+
+    public function __construct()
+    {
+        $this->collection = new ArrayCollection();
+        $this->commentaries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +138,60 @@ class User
     public function setInscriptionDate(\DateTimeInterface $inscriptionDate): self
     {
         $this->inscriptionDate = $inscriptionDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|book[]
+     */
+    public function getCollection(): Collection
+    {
+        return $this->collection;
+    }
+
+    public function addCollection(book $collection): self
+    {
+        if (!$this->collection->contains($collection)) {
+            $this->collection[] = $collection;
+        }
+
+        return $this;
+    }
+
+    public function removeCollection(book $collection): self
+    {
+        $this->collection->removeElement($collection);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|commentary[]
+     */
+    public function getCommentaries(): Collection
+    {
+        return $this->commentaries;
+    }
+
+    public function addCommentary(commentary $commentary): self
+    {
+        if (!$this->commentaries->contains($commentary)) {
+            $this->commentaries[] = $commentary;
+            $commentary->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentary(commentary $commentary): self
+    {
+        if ($this->commentaries->removeElement($commentary)) {
+            // set the owning side to null (unless already changed)
+            if ($commentary->getUser() === $this) {
+                $commentary->setUser(null);
+            }
+        }
 
         return $this;
     }

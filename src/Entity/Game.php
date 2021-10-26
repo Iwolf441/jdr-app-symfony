@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Game
      * @ORM\Column(type="boolean")
      */
     private $visible;
+
+    /**
+     * @ORM\OneToMany(targetEntity=book::class, mappedBy="game", orphanRemoval=true)
+     */
+    private $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,35 @@ class Game
     {
         $this->visible = $visible;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection|book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getGame() === $this) {
+                $book->setGame(null);
+            }
+        }
         return $this;
     }
 }
