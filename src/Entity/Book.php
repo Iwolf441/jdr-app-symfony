@@ -50,7 +50,7 @@ class Book
     private $visible;
 
     /**
-     * @ORM\OneToOne(targetEntity=category::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Category::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -62,7 +62,7 @@ class Book
     private $game;
 
     /**
-     * @ORM\OneToMany(targetEntity=commentary::class, mappedBy="book")
+     * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="book")
      */
     private $commentaries;
 
@@ -148,12 +148,12 @@ class Book
         return $this;
     }
 
-    public function getCategory(): ?category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(category $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 
@@ -180,7 +180,7 @@ class Book
         return $this->commentaries;
     }
 
-    public function addCommentary(commentary $commentary): self
+    public function addCommentary(Commentary $commentary): self
     {
         if (!$this->commentaries->contains($commentary)) {
             $this->commentaries[] = $commentary;
@@ -190,7 +190,7 @@ class Book
         return $this;
     }
 
-    public function removeCommentary(commentary $commentary): self
+    public function removeCommentary(Commentary $commentary): self
     {
         if ($this->commentaries->removeElement($commentary)) {
             // set the owning side to null (unless already changed)

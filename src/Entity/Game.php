@@ -35,7 +35,7 @@ class Game
     private $visible;
 
     /**
-     * @ORM\OneToMany(targetEntity=book::class, mappedBy="game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="game", orphanRemoval=true)
      */
     private $books;
 
@@ -93,7 +93,7 @@ class Game
         return $this->books;
     }
 
-    public function addBook(book $book): self
+    public function addBook(Book $book): self
     {
         if (!$this->books->contains($book)) {
             $this->books[] = $book;
@@ -103,7 +103,7 @@ class Game
         return $this;
     }
 
-    public function removeBook(book $book): self
+    public function removeBook(Book $book): self
     {
         if ($this->books->removeElement($book)) {
             // set the owning side to null (unless already changed)

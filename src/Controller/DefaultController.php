@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
+use App\Form\GameType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,8 +40,18 @@ class DefaultController extends AbstractController
     /**
      * @Route("/formJeu",name="formJeu")
      */
-    public function formJeu(): Response{
-        return $this->render('/pages/formjeu.html.twig');
+    public function formJeu(Request $request, EntityManagerInterface $em): Response{
+
+        $game = new Game();
+        $form = $this->createForm(GameType::class, $game);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $game->setVisible(false);
+            $em->persist($game);
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
     }
     /**
      * @Route("/formLivre",name="formLivre")
