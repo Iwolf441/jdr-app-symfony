@@ -17,48 +17,13 @@
                                  </tr>
                                  </thead>
                                  <tbody>
+                                 {% for game in games %}
                                  <tr>
-                                     <td><a href="jeu.html">Albator RPG</a></td>
+                                     <td><a href="{{ url('jeu') }}">{{ game.name }}</a></td>
                                  </tr>
-                                 <tr>
-                                     <td><a href="#">Donjon et dragons 3</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Donjon et dragons 4</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Donjon et dragons 5</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Pathfinder</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Tiny</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Shadowrun </a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Starfinder</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Tiny </a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Trinités</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Vampire : La mascarade</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Warhammer V2</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Warhammer V4</a></td>
-                                 </tr>
-                                 <tr>
-                                     <td><a href="#">Zore</a></td>
-                                 </tr>
+                                 {% else %}
+                                     <h2>Pas trouvé !</h2>
+                                 {% endfor %}
                                  </tbody>
                              </table>
                          </div>

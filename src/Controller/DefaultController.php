@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Form\GameType;
+use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +17,9 @@ class DefaultController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function home(): Response {
-        return $this->render('/pages/games.html.twig');
+    public function home( GameRepository $gr): Response {
+        $games = $gr->findAll();
+        return $this->render('/pages/games.html.twig',['games'=> $games]);
     }
     /**
      * @Route("/profil",name="profil")
@@ -44,7 +46,7 @@ class DefaultController extends AbstractController
 
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
-
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $game->setVisible(false);
             $em->persist($game);
