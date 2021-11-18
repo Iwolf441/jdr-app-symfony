@@ -6,21 +6,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Donjon et dragons 5</h4>
+                        <h4 class="card-title">{{ game.name}}</h4>
                     </div>
                     <div class="card-body">
                         <h2>Description</h2>
-                        <p>Cette cinquième incarnation de Donjons et Dragons s’inscrit dans la tradition qui s’est
-                            mise en place depuis la première édition d’AD&D. Un personnage est d’abord défini par sa
-                            race. Celles que propose la 5e édition sont originaires d’un univers
-                            médiéval-fantastique générique. On y trouve ainsi des Nains, des Elfes, des Halfelins
-                            (Halfling, version d&desque du Hobbit), des gnomes et des humains. Le Player's Handbook
-                            propose pour ces races des variantes. Ainsi, il est possible d’incarner un Nain des
-                            Montagnes ou un Nain des Collines, les premiers étant plus forts, les seconds plus
-                            robustes. Par ailleurs, un joueur pourra choisir d’incarner un membre d’une des races
-                            apparues avec le développement du jeu comme les Tieffelins (des créatures d’origine
-                            démoniaque), des SangDragons (qui descendent des dragons) ou des semi-orques.</p>
-
+                        <p>{{ game.description}}</p>
                         <h2>Livres</h2>
                         <p>Pas dans la liste ? <a class="text-primary" href="{{ url("formLivre") }}">Ajoutez-le !</a></p>
                         <div class="table-responsive">
@@ -32,23 +22,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><a href="livre.html">Manuel du joueur</a></td>
-                                    <td>Règles</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">Manuel des monstres</a></td>
-                                    <td>Règles</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">La barovie</a></td>
-                                    <td>Setting</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">La malédiction de Strahd</a></td>
-                                    <td>Scénario</td>
-                                </tr>
-
+                                {% for book in game.books %}
+                                    <tr>
+                                        <td><a href="{{url('livre',{id: book.id})}}">{{ book.title }}</a></td>
+                                        <td>{{book.category}}</td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>

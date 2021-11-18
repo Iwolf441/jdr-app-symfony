@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\PhotoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\Entity(repositoryClass=PhotoRepository::class)
  */
-class Category
+class Photo
 {
     /**
      * @ORM\Id
@@ -20,27 +20,22 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $url;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getUrl(): ?string
     {
-        return $this->name;
+        return $this->url;
     }
 
-    public function setName(string $name): self
+    public function setUrl(string $url): self
     {
-        $this->name = $name;
+        $this->url = $url;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

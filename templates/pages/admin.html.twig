@@ -11,7 +11,7 @@
       <div class="accordion__item">
        <div class="accordion__header" data-toggle="collapse" data-target="#default_collapseOne">
         <span class="accordion__header--text">Nouveaux Jeux</span>
-        <span class="badge badge-primary badge-pill">14</span>
+        <span class="badge badge-primary badge-pill">{{ gamesCount }}</span>
         <span class="accordion__header--indicator"></span>
        </div>
        <div id="default_collapseOne" class="collapse accordion__body show"
@@ -26,31 +26,14 @@
          </tr>
          </thead>
          <tbody>
-         <tr>
-          <td><a href="{{ url('livre')}}">Manuel du joueur</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">Manuel des monstres</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">La barovie</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">La malédiction de Strahd</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-
+         {% for game in games %}
+          <tr>
+           <td><a href="{{ url('jeu',{id: game.id})}}">{{ game.name }}</a></td>
+           <td><a href="#"><i class="icon-eye"></i></a></td>
+           <td><a href="#"><i class="icon-like"></i></a></td>
+           <td><a href="#"><i class="icon-trash"></i></a></td>
+          </tr>
+         {% endfor %}
          </tbody>
         </table>
        </div>

@@ -19,32 +19,13 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    // /**
-    //  * @return Game[] Returns an array of Game objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function countByVisibility($visibility)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('a')
+            ->select('count(a.id)')
+            ->where('a.visible = :visibility')
+            ->setParameter('visibility', $visibility);
 
-    /*
-    public function findOneBySomeField($value): ?Game
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $qb->getQuery()->getSingleScalarResult();
     }
-    */
 }

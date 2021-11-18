@@ -40,11 +40,6 @@ class Book
     private $releaseDate;
 
     /**
-     * @ORM\Column(type="string", length=400)
-     */
-    private $cover;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $visible;
@@ -65,6 +60,12 @@ class Book
      * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="book")
      */
     private $commentaries;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Photo::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $cover;
 
     public function __construct()
     {
@@ -120,18 +121,6 @@ class Book
     public function setReleaseDate(\DateTimeInterface $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
-
-        return $this;
-    }
-
-    public function getCover(): ?string
-    {
-        return $this->cover;
-    }
-
-    public function setCover(string $cover): self
-    {
-        $this->cover = $cover;
 
         return $this;
     }
@@ -198,6 +187,18 @@ class Book
                 $commentary->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCover(): ?Photo
+    {
+        return $this->cover;
+    }
+
+    public function setCover(Photo $cover): self
+    {
+        $this->cover = $cover;
 
         return $this;
     }
