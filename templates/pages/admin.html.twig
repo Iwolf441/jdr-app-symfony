@@ -1,5 +1,4 @@
 {% extends "layouts/user.html.twig" %}
-
  {% block content %}
   <div class="container-fluid">
    <div class="card">
@@ -28,10 +27,10 @@
          <tbody>
          {% for game in games %}
           <tr>
-           <td><a href="{{ url('jeu',{id: game.id})}}">{{ game.name }}</a></td>
-           <td><a href="#"><i class="icon-eye"></i></a></td>
+           <td><a href="{{ url('viewGame',{id: game.id})}}">{{ game.name }}</a></td>
+           <td><a href="{{ url('viewGame',{id: game.id})}}"><i class="icon-eye"></i></a></td>
            <td><a href="#"><i class="icon-like"></i></a></td>
-           <td><a href="#"><i class="icon-trash"></i></a></td>
+           <td><a href="{{ url('removeGame',{id: game.id})}}"><i class="icon-trash"></i></a></td>
           </tr>
          {% endfor %}
          </tbody>
@@ -42,7 +41,7 @@
        <div class="accordion__header collapsed" data-toggle="collapse"
             data-target="#default_collapseTwo">
         <span class="accordion__header--text">Nouveaux Livres</span>
-        <span class="badge badge-primary badge-pill">14</span>
+        <span class="badge badge-primary badge-pill">{{ booksCount}}</span>
         <span class="accordion__header--indicator"></span>
        </div>
        <div id="default_collapseTwo" class="collapse accordion__body" data-parent="#accordion-one">
@@ -57,34 +56,15 @@
          </tr>
          </thead>
          <tbody>
-         <tr>
-          <td><a href="livre.html">Manuel du joueur</a></td>
-          <td><a href="#">Vampire</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">Manuel des monstres</a></td>
-          <td><a href="#">Vampire</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">La barovie</a></td>
-          <td><a href="#">Vampire</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
-         <tr>
-          <td><a href="#">La malédiction de Strahd</a></td>
-          <td><a href="#">Vampire</a></td>
-          <td><a href="#"><i class="icon-eye"></i></a></td>
-          <td><a href="#"><i class="icon-like"></i></a></td>
-          <td><a href="#"><i class="icon-trash"></i></a></td>
-         </tr>
+         {% for book in books %}
+          <tr>
+           <td><a href="{{ url('viewBook',{id: book.id})}}">{{ book.title}}</a></td>
+           <td><a href="{{ url('viewGame',{id: book.game.id})}}">{{ book.game.name}}</a></td>
+           <td><a href="{{ url('viewBook',{id: book.id})}}"><i class="icon-eye"></i></a></td>
+           <td><a href="#"><i class="icon-like"></i></a></td>
+           <td><a href="#"><i class="icon-trash"></i></a></td>
+          </tr>
+         {% endfor %}
          </tbody>
         </table>
        </div>
@@ -93,3 +73,4 @@
     </div>
    </div>
 {% endblock content %}
+  </div>

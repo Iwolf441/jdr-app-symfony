@@ -22,33 +22,39 @@ class DefaultController extends AbstractController
      * @Route("/",name="home")
      */
     public function home( GameRepository $gr): Response {
-        $games = $gr->findAll();
+        $games = $gr->findtByVisibility(true);
         return $this->render('/pages/games.html.twig',['games'=> $games]);
     }
+
     /**
      * @Route("/profil",name="profil")
      */
     public function profil(): Response{
         return $this->render('/pages/profil.html.twig');
     }
+
     /**
      * @Route("/admin",name="admin")
      */
-    public function admin(GameRepository $gr): Response{
-        $games = $gr->findAll();
+    public function admin(GameRepository $gr, BookRepository $br): Response{
+        $games = $gr->findtByVisibility(false);
+        $books = $br->findByVisibility(false);
         $gamesCount = $gr->countByVisibility(false);
-        return $this->render('/pages/admin.html.twig',['games'=> $games, 'gamesCount'=> $gamesCount]);
+        $booksCount = $br->countByVisibility(false);
+        return $this->render('/pages/admin.html.twig',['games'=> $games, 'books'=>$books, 'gamesCount'=> $gamesCount, 'booksCount' => $booksCount]);
     }
+
     /**
      * @Route("/collection",name="collection")
      */
     public function collection(): Response{
         return $this->render('/pages/collection.html.twig');
     }
+
     /**
-     * @Route("/formJeu",name="formJeu")
+     * @Route("/new-Game",name="addGame")
      */
-    public function formJeu(Request $request, EntityManagerInterface $em): Response{
+    public function addGame(Request $request, EntityManagerInterface $em): Response{
 
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
@@ -62,9 +68,9 @@ class DefaultController extends AbstractController
         return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
     }
     /**
-     * @Route("/formLivre",name="formLivre")
+     * @Route("/new-book",name="addBook")
      */
-    public function formLivre(Request $request, PhotoUploader $photoUploader, EntityManagerInterface $em, GameRepository $gameRepository): Response{
+    public function addBook(Request $request, PhotoUploader $photoUploader, EntityManagerInterface $em, GameRepository $gameRepository): Response{
         $game = $gameRepository->find(1);
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -85,10 +91,11 @@ class DefaultController extends AbstractController
         }
         return $this->render('/pages/formlivre.html.twig',['bookForm' => $form->createView()]);
     }
+
     /**
-     * @Route("/jeu/{id}",name="jeu")
+     * @Route("/game/{id}",name="viewGame")
      */
-    public function jeu(int $id, GameRepository $gameRepository): Response{
+    public function viewGame(int $id, GameRepository $gameRepository): Response{
 
         $game = $gameRepository->find($id);
 
@@ -97,10 +104,23 @@ class DefaultController extends AbstractController
         }
         return $this->render('/pages/jeu.html.twig',['game'=> $game]);
     }
+
     /**
-     * @Route("/livre/{id}",name="livre")
+     * @Route("/game/remove/{id}",name="removeGame")
      */
-    public function livre(int $id, BookRepository $bookRepository): Response{
+
+    public function removeGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager)
+    {
+        $game = $gameRepository->find($id);
+        $entityManager->remove($game);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin');
+    }
+
+    /**
+     * @Route("/book/{id}",name="viewBook")
+     */
+    public function viewBook(int $id, BookRepository $bookRepository): Response{
 
         $book = $bookRepository->find($id);
         if ($book == null) {
@@ -114,6 +134,7 @@ class DefaultController extends AbstractController
     public function login(): Response{
         return $this->render('/pages/login.html.twig');
     }
+
     /**
      * @Route("/signup",name="inscription")
      */

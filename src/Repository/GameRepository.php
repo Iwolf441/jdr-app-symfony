@@ -19,6 +19,15 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+    public function findtByVisibility($visibility)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.visible = :visibility')
+            ->setParameter('visibility', $visibility);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function countByVisibility($visibility)
     {
         $qb = $this->createQueryBuilder('a')

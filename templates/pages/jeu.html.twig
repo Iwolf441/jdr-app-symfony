@@ -6,13 +6,13 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ game.name}}</h4>
+                        <h4 class="card-title">{{ game.name }}</h4>
                     </div>
                     <div class="card-body">
                         <h2>Description</h2>
-                        <p>{{ game.description}}</p>
+                        <p>{{ game.description }}</p>
                         <h2>Livres</h2>
-                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("formLivre") }}">Ajoutez-le !</a></p>
+                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook") }}">Ajoutez-le !</a></p>
                         <div class="table-responsive">
                             <table class="table table-responsive-sm">
                                 <thead>
@@ -24,8 +24,8 @@
                                 <tbody>
                                 {% for book in game.books %}
                                     <tr>
-                                        <td><a href="{{url('livre',{id: book.id})}}">{{ book.title }}</a></td>
-                                        <td>{{book.category}}</td>
+                                        <td><a href="{{ url('viewBook',{id: book.id}) }}">{{ book.title }}</a></td>
+                                        <td>{{ book.category }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
