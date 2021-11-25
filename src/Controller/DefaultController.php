@@ -52,6 +52,19 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/game/{id}",name="viewGame")
+     */
+    public function viewGame(int $id, GameRepository $gameRepository): Response{
+
+        $game = $gameRepository->find($id);
+
+        if ($game == null) {
+            throw new NotFoundHttpException("Jeu Inexistant");
+        }
+        return $this->render('/pages/jeu.html.twig',['game'=> $game]);
+    }
+
+    /**
      * @Route("/new-Game",name="addGame")
      */
     public function addGame(Request $request, EntityManagerInterface $em): Response{
@@ -67,6 +80,57 @@ class DefaultController extends AbstractController
         }
         return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
     }
+
+    /**
+     * @Route("/edit-game/{id}",name="editGame")
+     */
+    public function editGame(int $id, Request $request, GameRepository $gameRepository, EntityManagerInterface $em)
+    {
+        $game = $gameRepository->find($id);
+        $form = $this->createForm(GameType::class,$game);
+        $form->handleRequest($request);
+        $game->getId();
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($game);
+            $em->flush();
+            return $this->redirectToRoute('viewGame',['id' => $game->getId()]);
+        }
+        return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
+    }
+    /**
+     * @Route("/approve-game/{id}",name="approveGame")
+     */
+    public function approveGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response{
+        $game = $gameRepository->find($id);
+        $game->setVisible(true);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin');
+    }
+
+    /**
+     * @Route("/remove-game/{id}",name="removeGame")
+     */
+
+    public function removeGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
+    {
+        $game = $gameRepository->find($id);
+        $entityManager->remove($game);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin');
+    }
+
+    /**
+     * @Route("/book/{id}",name="viewBook")
+     */
+    public function viewBook(int $id, BookRepository $bookRepository): Response{
+
+        $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre inexistant");
+        }
+        return $this->render('/pages/livre.html.twig', ['book'=>$book]);
+    }
+
     /**
      * @Route("/new-book",name="addBook")
      */
@@ -93,41 +157,26 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/game/{id}",name="viewGame")
+     * @Route("/removeBook/{id}",name="removeBook")
      */
-    public function viewGame(int $id, GameRepository $gameRepository): Response{
+    public function removeBook(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response{
 
-        $game = $gameRepository->find($id);
-
-        if ($game == null) {
-            throw new NotFoundHttpException("Jeu Inexistant");
-        }
-        return $this->render('/pages/jeu.html.twig',['game'=> $game]);
-    }
-
-    /**
-     * @Route("/game/remove/{id}",name="removeGame")
-     */
-
-    public function removeGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager)
-    {
-        $game = $gameRepository->find($id);
-        $entityManager->remove($game);
-        $entityManager->flush();
+        $book = $bookRepository->find($id);
+        $entityManager->remove($book);
         return $this->redirectToRoute('admin');
     }
 
     /**
-     * @Route("/book/{id}",name="viewBook")
+     * @Route("/approve-book/{id}",name="approveBook")
      */
-    public function viewBook(int $id, BookRepository $bookRepository): Response{
-
+    public function approveBook(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
         $book = $bookRepository->find($id);
-        if ($book == null) {
-            throw new NotFoundHttpException("Livre inexistant");
-        }
-        return $this->render('/pages/livre.html.twig', ['book'=>$book]);
+        $book->setVisible(true);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin');
     }
+
     /**
      * @Route("/login",name="login")
      */

@@ -19,7 +19,7 @@
                                  <tbody>
                                  {% for game in games %}
                                  <tr>
-                                     <td><a href="{{url('jeu',{id: game.id})}}">{{ game.name }}</a></td>
+                                     <td><a href="{{url('viewGame',{id: game.id})}}">{{ game.name }}</a></td>
                                  </tr>
                                  {% else %}
                                      <h2>Pas trouvé !</h2>
