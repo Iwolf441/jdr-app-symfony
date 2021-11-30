@@ -97,6 +97,7 @@ class DefaultController extends AbstractController
         }
         return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
     }
+
     /**
      * @Route("/approve-game/{id}",name="approveGame")
      */
@@ -106,7 +107,6 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
-
     /**
      * @Route("/remove-game/{id}",name="removeGame")
      */
@@ -130,18 +130,15 @@ class DefaultController extends AbstractController
         }
         return $this->render('/pages/livre.html.twig', ['book'=>$book]);
     }
-
     /**
-     * @Route("/new-book",name="addBook")
+     * @Route("/new-book/{gameId}",name="addBook")
      */
-    public function addBook(Request $request, PhotoUploader $photoUploader, EntityManagerInterface $em, GameRepository $gameRepository): Response{
-        $game = $gameRepository->find(1);
+    public function addBook(int $gameId,Request $request, PhotoUploader $photoUploader, GameRepository $gameRepository, EntityManagerInterface $em): Response{
+        $game = $gameRepository->find($gameId);
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-
             $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
             if ($book->getCover() !== null) {
                 $em->persist($book->getCover());
@@ -152,6 +149,23 @@ class DefaultController extends AbstractController
             $em->persist($game);
             $em->flush();
             return $this->redirectToRoute('home');
+        }
+        return $this->render('/pages/formlivre.html.twig',['bookForm' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/editBook/{id}",name="editBook")
+     */
+
+    public function editBook(int $id, Request $request,PhotoUploader $photoUploader, BookRepository $bookRepository, EntityManagerInterface $em): Response
+    {
+        $book = $bookRepository->find($id);
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($book);
+            $em->flush();
+            return $this->redirectToRoute('viewBook',['id' => $book->getId()]);
         }
         return $this->render('/pages/formlivre.html.twig',['bookForm' => $form->createView()]);
     }

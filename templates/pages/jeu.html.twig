@@ -1,5 +1,4 @@
 {% extends "layouts/user.html.twig" %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -12,7 +11,7 @@
                         <h2>Description</h2>
                         <p>{{ game.description }}</p>
                         <h2>Livres</h2>
-                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook") }}">Ajoutez-le !</a></p>
+                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook",{gameId: game.id}) }}">Ajoutez-le !</a></p>
                         <div class="table-responsive">
                             <table class="table table-responsive-sm">
                                 <thead>

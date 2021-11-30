@@ -45,12 +45,6 @@ class Book
     private $visible;
 
     /**
-     * @ORM\OneToOne(targetEntity=Category::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -66,6 +60,12 @@ class Book
      * @ORM\JoinColumn(nullable=false)
      */
     private $cover;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="books")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
 
     public function __construct()
     {

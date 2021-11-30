@@ -15,6 +15,7 @@
                         <div>Editeur : {{ book.editor }}</div>
                         <p> Description</p>
                         <p>{{ book.description }}</p>
+                        <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
                     </div>
                     <div class="card-body">
                         <h4>Commentaires</h4>
