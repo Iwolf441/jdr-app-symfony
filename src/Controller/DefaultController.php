@@ -50,7 +50,6 @@ class DefaultController extends AbstractController
     public function collection(): Response{
         return $this->render('/pages/collection.html.twig');
     }
-
     /**
      * @Route("/game/{id}",name="viewGame")
      */
