@@ -2,8 +2,13 @@
 
 namespace App\Search;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Search
 {
+    /**
+     * @Assert\NotBlank
+     */
     private string $keyword;
 
     /**
