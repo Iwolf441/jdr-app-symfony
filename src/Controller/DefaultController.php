@@ -8,6 +8,8 @@ use App\Form\BookType;
 use App\Form\GameType;
 use App\Repository\BookRepository;
 use App\Repository\GameRepository;
+use App\Search\Search;
+use App\Search\SearchType;
 use App\Service\PhotoUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,52 +23,59 @@ class DefaultController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function home( GameRepository $gr): Response {
+    public function home(GameRepository $gr): Response
+    {
         $games = $gr->findtByVisibility(true);
-        return $this->render('/pages/games.html.twig',['games'=> $games]);
+        return $this->render('/pages/games.html.twig', ['games' => $games]);
     }
 
     /**
      * @Route("/profil",name="profil")
      */
-    public function profil(): Response{
+    public function profil(): Response
+    {
         return $this->render('/pages/profil.html.twig');
     }
 
     /**
      * @Route("/admin",name="admin")
      */
-    public function admin(GameRepository $gr, BookRepository $br): Response{
+    public function admin(GameRepository $gr, BookRepository $br): Response
+    {
         $games = $gr->findtByVisibility(false);
         $books = $br->findByVisibility(false);
         $gamesCount = $gr->countByVisibility(false);
         $booksCount = $br->countByVisibility(false);
-        return $this->render('/pages/admin.html.twig',['games'=> $games, 'books'=>$books, 'gamesCount'=> $gamesCount, 'booksCount' => $booksCount]);
+        return $this->render('/pages/admin.html.twig', ['games' => $games, 'books' => $books, 'gamesCount' => $gamesCount, 'booksCount' => $booksCount]);
     }
 
     /**
      * @Route("/collection",name="collection")
      */
-    public function collection(): Response{
+    public function collection(): Response
+    {
         return $this->render('/pages/collection.html.twig');
     }
+
     /**
      * @Route("/game/{id}",name="viewGame")
      */
-    public function viewGame(int $id, GameRepository $gameRepository): Response{
+    public function viewGame(int $id, GameRepository $gameRepository): Response
+    {
 
         $game = $gameRepository->find($id);
 
         if ($game == null) {
             throw new NotFoundHttpException("Jeu Inexistant");
         }
-        return $this->render('/pages/jeu.html.twig',['game'=> $game]);
+        return $this->render('/pages/jeu.html.twig', ['game' => $game]);
     }
 
     /**
      * @Route("/new-Game",name="addGame")
      */
-    public function addGame(Request $request, EntityManagerInterface $em): Response{
+    public function addGame(Request $request, EntityManagerInterface $em): Response
+    {
 
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
@@ -77,7 +86,7 @@ class DefaultController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('home');
         }
-        return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
+        return $this->render('/pages/formjeu.html.twig', ['gameForm' => $form->createView()]);
     }
 
     /**
@@ -86,26 +95,28 @@ class DefaultController extends AbstractController
     public function editGame(int $id, Request $request, GameRepository $gameRepository, EntityManagerInterface $em)
     {
         $game = $gameRepository->find($id);
-        $form = $this->createForm(GameType::class,$game);
+        $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
         $game->getId();
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($game);
             $em->flush();
-            return $this->redirectToRoute('viewGame',['id' => $game->getId()]);
+            return $this->redirectToRoute('viewGame', ['id' => $game->getId()]);
         }
-        return $this->render('/pages/formjeu.html.twig',['gameForm'=> $form->createView()]);
+        return $this->render('/pages/formjeu.html.twig', ['gameForm' => $form->createView()]);
     }
 
     /**
      * @Route("/approve-game/{id}",name="approveGame")
      */
-    public function approveGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response{
+    public function approveGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
+    {
         $game = $gameRepository->find($id);
         $game->setVisible(true);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
+
     /**
      * @Route("/remove-game/{id}",name="removeGame")
      */
@@ -121,18 +132,21 @@ class DefaultController extends AbstractController
     /**
      * @Route("/book/{id}",name="viewBook")
      */
-    public function viewBook(int $id, BookRepository $bookRepository): Response{
+    public function viewBook(int $id, BookRepository $bookRepository): Response
+    {
 
         $book = $bookRepository->find($id);
         if ($book == null) {
             throw new NotFoundHttpException("Livre inexistant");
         }
-        return $this->render('/pages/livre.html.twig', ['book'=>$book]);
+        return $this->render('/pages/livre.html.twig', ['book' => $book]);
     }
+
     /**
      * @Route("/new-book/{gameId}",name="addBook")
      */
-    public function addBook(int $gameId,Request $request, PhotoUploader $photoUploader, GameRepository $gameRepository, EntityManagerInterface $em): Response{
+    public function addBook(int $gameId, Request $request, PhotoUploader $photoUploader, GameRepository $gameRepository, EntityManagerInterface $em): Response
+    {
         $game = $gameRepository->find($gameId);
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -149,30 +163,31 @@ class DefaultController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('home');
         }
-        return $this->render('/pages/formlivre.html.twig',['bookForm' => $form->createView()]);
+        return $this->render('/pages/formlivre.html.twig', ['bookForm' => $form->createView()]);
     }
 
     /**
      * @Route("/editBook/{id}",name="editBook")
      */
 
-    public function editBook(int $id, Request $request,PhotoUploader $photoUploader, BookRepository $bookRepository, EntityManagerInterface $em): Response
+    public function editBook(int $id, Request $request, PhotoUploader $photoUploader, BookRepository $bookRepository, EntityManagerInterface $em): Response
     {
         $book = $bookRepository->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($book);
             $em->flush();
-            return $this->redirectToRoute('viewBook',['id' => $book->getId()]);
+            return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
         }
-        return $this->render('/pages/formlivre.html.twig',['bookForm' => $form->createView()]);
+        return $this->render('/pages/formlivre.html.twig', ['bookForm' => $form->createView()]);
     }
 
     /**
      * @Route("/removeBook/{id}",name="removeBook")
      */
-    public function removeBook(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response{
+    public function removeBook(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
+    {
 
         $book = $bookRepository->find($id);
         $entityManager->remove($book);
@@ -193,14 +208,33 @@ class DefaultController extends AbstractController
     /**
      * @Route("/login",name="login")
      */
-    public function login(): Response{
+    public function login(): Response
+    {
         return $this->render('/pages/login.html.twig');
     }
 
     /**
      * @Route("/signup",name="inscription")
      */
-    public function inscription(): Response{
+    public function inscription(): Response
+    {
         return $this->render('/pages/inscription.html.twig');
+    }
+
+    /**
+     * @Route("/search",name="search")
+     */
+
+    public function search(Request $request, GameRepository $gameRepository)
+    {
+        $search = new Search();
+        $form = $this->createForm(SearchType::class, $search);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $result = $gameRepository->findBySearch( $search);
+            return $this->render('/pages/games.html.twig', ['games' => $result]);
+        }
+        return $this->redirectToRoute('home');
     }
 }

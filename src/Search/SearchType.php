@@ -21,7 +21,5 @@ class SearchType extends AbstractType
             'data_class'=> Search::class
         ]);
     }
-
     /*  ARRET : VIDEO 13 MINUTES 10 */
-
 }

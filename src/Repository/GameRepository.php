@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Game;
+use App\Search\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,5 +37,14 @@ class GameRepository extends ServiceEntityRepository
             ->setParameter('visibility', $visibility);
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function findBySearch(Search $search)
+    {
+        $qb= $this->createQueryBuilder('g')
+            ->where('g.name LIKE :keyword')
+            ->setParameter('keyword','%'.$search->getKeyword().'%');
+
+        return $qb->getQuery()->getResult();
     }
 }
