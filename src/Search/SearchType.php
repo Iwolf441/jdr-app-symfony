@@ -14,12 +14,10 @@ class SearchType extends AbstractType
         $builder->add('keyword')
         ->add('submit',SubmitType::class);
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class'=> Search::class
         ]);
     }
-    /*  ARRET : VIDEO 13 MINUTES 10 */
 }

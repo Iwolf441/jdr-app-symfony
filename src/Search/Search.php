@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Search;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Search
@@ -10,7 +9,6 @@ class Search
      * @Assert\NotBlank
      */
     private string $keyword;
-
     /**
      * @return string
      */
@@ -18,7 +16,6 @@ class Search
     {
         return $this->keyword;
     }
-
     /**
      * @param string $keyword
      */
