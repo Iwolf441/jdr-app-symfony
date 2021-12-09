@@ -72,7 +72,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/new-Game",name="addGame")
+     * @Route("/new-game",name="addGame")
      */
     public function addGame(Request $request, EntityManagerInterface $em): Response
     {
@@ -203,14 +203,6 @@ class DefaultController extends AbstractController
         $book->setVisible(true);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
-    }
-
-    /**
-     * @Route("/login",name="login")
-     */
-    public function login(): Response
-    {
-        return $this->render('/pages/login.html.twig');
     }
 
     /**

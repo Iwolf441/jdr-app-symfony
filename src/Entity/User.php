@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Book;
+use App\Entity\Commentary;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @method string getUserIdentifier()
  */
-class User implements UserInterface
+class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -36,11 +37,6 @@ class User implements UserInterface
     private $mail;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $admin;
-
-    /**
      * @ORM\Column(type="string", length=400, nullable=true)
      */
     private $photo;
@@ -59,6 +55,24 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=commentary::class, mappedBy="user")
      */
     private $commentaries;
+
+    private $plainpassword;
+
+    /**
+     * @return mixed
+     */
+    public function getPlainpassword()
+    {
+        return $this->plainpassword;
+    }
+
+    /**
+     * @param mixed $plainpassword
+     */
+    public function setPlainpassword($plainpassword): void
+    {
+        $this->plainpassword = $plainpassword;
+    }
 
     public function __construct()
     {
@@ -103,18 +117,6 @@ class User implements UserInterface
     public function setMail(string $mail): self
     {
         $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getAdmin(): ?bool
-    {
-        return $this->admin;
-    }
-
-    public function setAdmin(bool $admin): self
-    {
-        $this->admin = $admin;
 
         return $this;
     }
@@ -197,24 +199,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->plainpassword=null;
     }
 
-    public function getUsername()
+    public function getUsername():string
     {
-        // TODO: Implement getUsername() method.
+        return $this->pseudo;
     }
     public function __call($name, $arguments)
     {

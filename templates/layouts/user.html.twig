@@ -67,15 +67,11 @@
                                     <i class="mdi mdi-magnify"></i>
                                 </span>
                                  <div class="dropdown-menu p-0 m-0">
-                                     <!--<<form>
-                                         input class="form-control" type="search" placeholder="Search"
-                                                 aria-label="Search">
-                                      </form> -->
                                      {% set searchForm = getSearchForm() %}
                                      {{ form_start(searchForm) }}
                                      {{ form_widget(searchForm.keyword,{'attr': {'class': 'form-control'}}) }}
                                      {{ form_widget(searchForm.submit,{'attr': {'class': 'form-control'}}) }}
-                                     {{ form_end(searchForm)}} -->
+                                     {{ form_end(searchForm)}}
                                  </div>
                              </div>
                          </div>
@@ -93,7 +89,7 @@
                                          <i class="icon-book-open"></i>
                                          <span class="ml-2">Collection</span>
                                      </a>
-                                     <a href="{{ url('login') }}" class="dropdown-item">
+                                     <a href="{{ url('app_login') }}" class="dropdown-item">
                                          <i class="icon-key"></i>
                                          <span class="ml-2">Logout </span>
                                      </a>
