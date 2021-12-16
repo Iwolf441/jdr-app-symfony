@@ -22,10 +22,10 @@ class SecurityController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserRegisterType::class,$user);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid())
         {
             $user->setPassword($passwordHasher->hashPassword($user,$user->getPlainpassword()));
+            $user->setRoles(['ROLE_USER']);
             $user->setInscriptionDate(new \DateTime('now'));
             $entityManager->persist($user);
             $entityManager->flush();
