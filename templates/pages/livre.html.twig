@@ -15,7 +15,9 @@
                         <div>Editeur : {{ book.editor }}</div>
                         <p> Description</p>
                         <p>{{ book.description }}</p>
-                        <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
+                        {% endif %}
                     </div>
                     <div class="card-body">
                         <h4>Commentaires</h4>

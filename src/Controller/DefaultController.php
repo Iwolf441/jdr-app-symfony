@@ -53,7 +53,6 @@ class DefaultController extends AbstractController
     {
         return $this->render('/pages/collection.html.twig');
     }
-
     /**
      * @Route("/game/{id}",name="viewGame")
      */
@@ -131,7 +130,6 @@ class DefaultController extends AbstractController
      */
     public function viewBook(int $id, BookRepository $bookRepository): Response
     {
-
         $book = $bookRepository->find($id);
         if ($book == null) {
             throw new NotFoundHttpException("Livre inexistant");
@@ -201,7 +199,6 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
-
     /**
      * @Route("/signup",name="inscription")
      */
