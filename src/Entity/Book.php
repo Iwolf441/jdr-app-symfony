@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
+
 class Book
 {
     /**
@@ -160,7 +161,6 @@ class Book
 
         return $this;
     }
-
     /**
      * @return Collection|commentary[]
      */
@@ -187,7 +187,6 @@ class Book
                 $commentary->setBook(null);
             }
         }
-
         return $this;
     }
 

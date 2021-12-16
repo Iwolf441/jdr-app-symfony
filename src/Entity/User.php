@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @method string getUserIdentifier()
  */
 class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
@@ -65,7 +64,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     {
         return $this->plainpassword;
     }
-
     /**
      * @param mixed $plainpassword
      */
@@ -101,7 +99,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     {
         return $this->password;
     }
-
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -220,8 +217,15 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     {
         return $this->pseudo;
     }
+
     public function __call($name, $arguments)
     {
         // TODO: Implement @method string getUserIdentifier()
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getMail();
+    }
+
 }

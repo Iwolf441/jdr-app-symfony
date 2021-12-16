@@ -28,7 +28,6 @@ class DefaultController extends AbstractController
         $games = $gr->findtByVisibility(true);
         return $this->render('/pages/games.html.twig', ['games' => $games]);
     }
-
     /**
      * @Route("/profil",name="profil")
      */
@@ -36,7 +35,6 @@ class DefaultController extends AbstractController
     {
         return $this->render('/pages/profil.html.twig');
     }
-
     /**
      * @Route("/admin",name="admin")
      */
@@ -48,7 +46,6 @@ class DefaultController extends AbstractController
         $booksCount = $br->countByVisibility(false);
         return $this->render('/pages/admin.html.twig', ['games' => $games, 'books' => $books, 'gamesCount' => $gamesCount, 'booksCount' => $booksCount]);
     }
-
     /**
      * @Route("/collection",name="collection")
      */

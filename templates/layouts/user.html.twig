@@ -89,10 +89,22 @@
                                          <i class="icon-book-open"></i>
                                          <span class="ml-2">Collection</span>
                                      </a>
-                                     <a href="{{ url('app_login') }}" class="dropdown-item">
+                                     {% if app.user %}
+                                     <a href="{{ url('app_logout') }}" class="dropdown-item">
                                          <i class="icon-key"></i>
                                          <span class="ml-2">Logout </span>
                                      </a>
+                                     {% endif %}
+                                     {% if not app.user %}
+                                         <a href="{{ url('app_login') }}" class="dropdown-item">
+                                             <i class="icon-key"></i>
+                                             <span class="ml-2">Login</span>
+                                         </a>
+                                         <a href="{{ url('register') }}" class="dropdown-item">
+                                             <i class="icon-key"></i>
+                                             <span class="ml-2">Register</span>
+                                         </a>
+                                     {% endif %}
                                  </div>
                              </li>
                          </ul>

@@ -17,7 +17,6 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-
     public function Register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
@@ -50,7 +49,6 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
-
     /**
      * @Route("/logout", name="app_logout")
      */
@@ -58,5 +56,4 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
 }
