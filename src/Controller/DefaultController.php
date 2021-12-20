@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Commentary;
 use App\Entity\Game;
 use App\Form\BookType;
+use App\Form\CommentaryType;
 use App\Form\GameType;
 use App\Repository\BookRepository;
 use App\Repository\GameRepository;
@@ -128,13 +130,31 @@ class DefaultController extends AbstractController
     /**
      * @Route("/book/{id}",name="viewBook")
      */
-    public function viewBook(int $id, BookRepository $bookRepository): Response
+    public function viewBook(int $id, BookRepository $bookRepository, Request $request, EntityManagerInterface $em): Response
     {
         $book = $bookRepository->find($id);
+
         if ($book == null) {
             throw new NotFoundHttpException("Livre inexistant");
         }
-        return $this->render('/pages/livre.html.twig', ['book' => $book]);
+
+        $commentary = new Commentary();
+        $commentary->setBook($book);
+        $commentaryForm = $this->createForm(CommentaryType::class,$commentary);
+
+        $commentaryForm->handleRequest($request);
+
+        if($commentaryForm->isSubmitted() && $commentaryForm->isValid())
+        {
+            $user = $this->getUser();
+            $commentary->setDate(new \DateTime('now'));
+            $commentary->setUser($user);
+            $em->persist($commentary);
+            $em->flush();
+            return $this->redirectToRoute('viewBook', ['id'=>$book->getId()]);
+        }
+
+        return $this->render('/pages/livre.html.twig', ['book' => $book, 'commentaryForm' => $commentaryForm->createView()]);
     }
 
     /**

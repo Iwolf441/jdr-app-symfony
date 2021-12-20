@@ -24,32 +24,6 @@
                         <div class="recent-comment m-t-15">
                             <div class="media">
                                 <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/4.png"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-primary">john doe</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">10 min ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/2.png"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-success">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla. Cras sit amet nibh libero, in
-                                        gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras sit amet nibh
-                                        libero, in gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras
-                                        sit amet nibh libero, in gravida nulla.Cras sit amet nibh libero, in gravida
-                                        nulla.Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">1 hour ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
                                     <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png") }}"
                                                      alt="..."></a>
                                 </div>
@@ -92,14 +66,29 @@
                                     <div class="comment-date">Yesterday</div>
                                 </div>
                             </div>
+                            {% for comment in book.commentaries %}
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
+                                                         alt="..."></a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading text-success">{{comment.user.pseudo}}</h4>
+                                        <p>{{ comment.content }}</p>
+                                        <p class="comment-date">{{ comment.date | date("d/m/Y") }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                         <h4>Ajouter un commentaire</h4>
-                        <form>
+                        <!--<form>
                             <div class="form-group">
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
                         </form>
+                        -->
+                        {{ form(commentaryForm) }}
                     </div>
                 </div>
             </div>
