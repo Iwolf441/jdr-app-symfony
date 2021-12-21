@@ -1,5 +1,4 @@
 {% extends "layouts/user.html.twig" %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -15,6 +14,11 @@
                         <div>Editeur : {{ book.editor }}</div>
                         <p> Description</p>
                         <p>{{ book.description }}</p>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('editBook',{id: book.id}) }}">Ajouter à ma collection.</a>
+                            <br>
+                        {% endif %}
+
                         {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
                         {% endif %}
@@ -22,50 +26,6 @@
                     <div class="card-body">
                         <h4>Commentaires</h4>
                         <div class="recent-comment m-t-15">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png") }}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-danger">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <div class="comment-date">Yesterday</div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/4.png") }}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-primary">john doe</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">10 min ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-success">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">1 hour ago</p>
-                                </div>
-                            </div>
-                            <div class="media no-border">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png")}}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-info">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <div class="comment-date">Yesterday</div>
-                                </div>
-                            </div>
                             {% for comment in book.commentaries %}
                                 <div class="media">
                                     <div class="media-left">
@@ -77,7 +37,12 @@
                                         <p>{{ comment.content }}</p>
                                         <p class="comment-date">{{ comment.date | date("d/m/Y") }}</p>
                                     </div>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ url('removeComment',{id: comment.id, idBook: book.id}) }}"> Supprimer</a>
+                                    {% endif %}
                                 </div>
+                                {% else %}
+                                <p>Il n'y a pas de commentaires.</p>
                             {% endfor %}
                         </div>
                         <h4>Ajouter un commentaire</h4>
@@ -88,7 +53,11 @@
                             <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
                         </form>
                         -->
-                        {{ form(commentaryForm) }}
+                        {% if is_granted('ROLE_USER') %}
+                          {{ form(commentaryForm) }}
+                            {% else %}
+                            <p>Vous devez être connectés pour pouvoir poster un commentaire.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

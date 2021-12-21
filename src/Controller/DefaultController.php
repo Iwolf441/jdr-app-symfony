@@ -9,6 +9,7 @@ use App\Form\BookType;
 use App\Form\CommentaryType;
 use App\Form\GameType;
 use App\Repository\BookRepository;
+use App\Repository\CommentaryRepository;
 use App\Repository\GameRepository;
 use App\Search\Search;
 use App\Search\SearchType;
@@ -242,5 +243,19 @@ class DefaultController extends AbstractController
             return $this->render('/pages/games.html.twig', ['games' => $result]);
         }
         return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/remove-comment/{id}/{idBook}--{idBook",name="removeComment")
+     */
+
+    public function removeComment(int $id,int $idBook, CommentaryRepository $commentaryRepository, EntityManagerInterface $em, BookRepository $bookRepository):Response
+    {
+        $commentary = $commentaryRepository->find($id);
+        $book = $bookRepository->find($idBook);
+        $em->remove($commentary);
+        $em->flush();
+
+        return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
     }
 }
