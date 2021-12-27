@@ -15,7 +15,7 @@
                         <p> Description</p>
                         <p>{{ book.description }}</p>
                         {% if is_granted('ROLE_USER') %}
-                            <a href="{{ url('editBook',{id: book.id}) }}">Ajouter à ma collection.</a>
+                            <a href="{{ url('addBookToCollection',{id: book.id}) }}">Ajouter à ma collection.</a>
                             <br>
                         {% endif %}
 

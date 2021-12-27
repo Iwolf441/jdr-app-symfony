@@ -13,8 +13,8 @@
                  <br>
                  <h4>Statistiques</h4>
                  <a href="collection.html">Votre collection</a>
-                 <p> Vous avez 5 livres <br>
-                     Vous avez 3 jeux</p>
+                 <p> Vous avez {{ bookCount}} livres <br>
+                     Vous avez {{ gameCount}} jeux</p>
                  <h4>Mes informations personelles</h4>
                  <div>Adresse mail : {{ app.user.mail }}</div>
                  <div>Inscrit depuis {{ app.user.inscriptionDate |date("d/m/Y")}} </div>

@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Entity\Commentary;
 use App\Entity\Game;
+use App\Entity\User;
 use App\Form\BookType;
 use App\Form\CommentaryType;
 use App\Form\GameType;
 use App\Repository\BookRepository;
 use App\Repository\CommentaryRepository;
 use App\Repository\GameRepository;
+use App\Repository\UserRepository;
 use App\Search\Search;
 use App\Search\SearchType;
 use App\Service\PhotoUploader;
@@ -34,9 +36,12 @@ class DefaultController extends AbstractController
     /**
      * @Route("/profil",name="profil")
      */
-    public function profil(): Response
+    public function profil(UserRepository $userRepository): Response
     {
-        return $this->render('/pages/profil.html.twig');
+        $user = $this->getUser();
+        $bookCount = $userRepository->countBooksInUserCollection($user->getId());
+        $gameCount = $userRepository->countGamesInUserCollection($user->getId());
+        return $this->render('/pages/profil.html.twig',['bookCount' => $bookCount,'gameCount' => $gameCount]);
     }
     /**
      * @Route("/admin",name="admin")
@@ -54,6 +59,12 @@ class DefaultController extends AbstractController
      */
     public function collection(): Response
     {
+        /**
+         * @var User $user
+         */
+
+        $user = $this->getUser();
+        $collection = $user->getCollection();
         return $this->render('/pages/collection.html.twig');
     }
     /**
@@ -147,6 +158,9 @@ class DefaultController extends AbstractController
 
         if($commentaryForm->isSubmitted() && $commentaryForm->isValid())
         {
+            /**
+             * @var User $user
+             */
             $user = $this->getUser();
             $commentary->setDate(new \DateTime('now'));
             $commentary->setUser($user);
@@ -246,7 +260,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/remove-comment/{id}/{idBook}--{idBook",name="removeComment")
+     * @Route("/remove-comment/{id}/{idBook}",name="removeComment")
      */
 
     public function removeComment(int $id,int $idBook, CommentaryRepository $commentaryRepository, EntityManagerInterface $em, BookRepository $bookRepository):Response
@@ -257,5 +271,40 @@ class DefaultController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
+    }
+
+    /**
+     * @Route("/addBookCollection/{id}",name="addBookToCollection")
+     */
+
+    public function addBookToCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
+    {
+        $book = $bookRepository->find($id);
+        /**
+         * @var User $user
+         */
+        $user =$this->getUser();
+        $user->addCollection($book);
+        $entityManager->persist($book);
+        $entityManager->flush();
+        return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
+    }
+
+    /**
+     * @Route("/removeBookCollection/{id}",name="removeBookFromCollection")
+     */
+
+    public function removeBookFromCollection (int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
+    {
+        $book = $bookRepository->find($id);
+        /**
+         * @var User $user
+         */
+        $user =$this->getUser();
+        $user->removeCollection($book);
+        $entityManager->persist($book);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('collection');
     }
 }

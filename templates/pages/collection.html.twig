@@ -23,23 +23,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="">Manuel du joueur</a></td>
-                                <td><a href="#"><i class="icon-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">Manuel des monstres</a></td>
-                                <td><a href="#"><i class="icon-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">La barovie</a></td>
-                                <td><a href="#"><i class="icon-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">La malédiction de Strahd</a></td>
-                                <td><a href="#"><i class="icon-trash"></i></a></td>
-                            </tr>
+                            {% for book in app.user.collection %}
+                                <tr>
+                                    <td><a href="{{ url('viewBook',{id: book.id}) }}">{{book.title}}</a></td>
+                                    <td><a href="{{ url('removeBookFromCollection',{id: book.id}) }}"><i class="icon-trash"></i></a></td>
 
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
