@@ -26,7 +26,8 @@ class UserRepository extends ServiceEntityRepository
             ->join('u.collection','c')
             ->where('u.id= :userId')
             ->setParameter('userId',$userId);
-            return $qb->getQuery()->getSingleScalarResult();
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     public function countGamesInUserCollection($userId)
@@ -37,7 +38,19 @@ class UserRepository extends ServiceEntityRepository
             ->join('c.game','g')
             ->where('u.id= :userId')
             ->setParameter('userId',$userId);
+
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function findGamesIdInUserCollection($userId)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('distinct(g.id)')
+            ->join('u.collection','b')
+            ->where('u.id= :userId')
+            ->join('b.game','g')
+            ->setParameter('userId',$userId);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

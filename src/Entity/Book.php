@@ -71,6 +71,7 @@ class Book
     public function __construct()
     {
         $this->commentaries = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,4 +202,13 @@ class Book
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
 }

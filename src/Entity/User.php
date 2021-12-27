@@ -170,7 +170,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
         return $this;
     }
-
+    
     /**
      * @return Collection|commentary[]
      */

@@ -37,4 +37,16 @@ class BookRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function findByUserandGame($idUser, $idGame)
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->join('b.user','u')
+            ->join('b.game','g')
+            ->where('g.id = :idGame and u.id = :idUser')
+            ->setParameters(['idGame'=> $idGame,'idUser'=>$idUser]);
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

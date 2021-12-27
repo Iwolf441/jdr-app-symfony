@@ -54,19 +54,7 @@ class DefaultController extends AbstractController
         $booksCount = $br->countByVisibility(false);
         return $this->render('/pages/admin.html.twig', ['games' => $games, 'books' => $books, 'gamesCount' => $gamesCount, 'booksCount' => $booksCount]);
     }
-    /**
-     * @Route("/collection",name="collection")
-     */
-    public function collection(): Response
-    {
-        /**
-         * @var User $user
-         */
 
-        $user = $this->getUser();
-        $collection = $user->getCollection();
-        return $this->render('/pages/collection.html.twig');
-    }
     /**
      * @Route("/game/{id}",name="viewGame")
      */
@@ -274,6 +262,29 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/collection",name="collection")
+     */
+    public function collection(UserRepository $userRepository, BookRepository $bookRepository): Response
+    {
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
+        $gamesId = $userRepository->findGamesIdInUserCollection($user->getId());
+        /*
+        $collec = [];
+
+        foreach ($gamesId as $id)
+        {
+            $collec= $bookRepository->findByUserandGame($user->getId(),$id);
+        }
+
+        die(var_dump($collec));  */
+
+        return $this->render('/pages/collection.html.twig',['test'=>$gamesId]);
+    }
+
+    /**
      * @Route("/addBookCollection/{id}",name="addBookToCollection")
      */
 
@@ -285,7 +296,6 @@ class DefaultController extends AbstractController
          */
         $user =$this->getUser();
         $user->addCollection($book);
-        $entityManager->persist($book);
         $entityManager->flush();
         return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
     }
@@ -302,7 +312,6 @@ class DefaultController extends AbstractController
          */
         $user =$this->getUser();
         $user->removeCollection($book);
-        $entityManager->persist($book);
         $entityManager->flush();
 
         return $this->redirectToRoute('collection');

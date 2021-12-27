@@ -10,10 +10,12 @@ class MyTwigExtension extends AbstractExtension
     /**
      * @param SearchFormGenerator $searchFormGenerator
      */
+
     public function __construct(SearchFormGenerator $searchFormGenerator)
     {
         $this->searchFormGenerator = $searchFormGenerator;
     }
+
     public function getFunctions()
     {
         return [
@@ -21,4 +23,3 @@ class MyTwigExtension extends AbstractExtension
         ];
     }
 }
-
