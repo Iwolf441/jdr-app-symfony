@@ -46,11 +46,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     private $inscriptionDate;
 
     /**
-     * @ORM\ManyToMany(targetEntity=book::class)
-     */
-    private $collection;
-
-    /**
      * @ORM\OneToMany(targetEntity=commentary::class, mappedBy="user")
      */
     private $commentaries;
@@ -61,6 +56,11 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="users")
+     */
+    private $collection;
 
     /**
      * @return mixed
@@ -79,8 +79,8 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
     public function __construct()
     {
-        $this->collection = new ArrayCollection();
         $this->commentaries = new ArrayCollection();
+        $this->collection = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,30 +143,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     public function setInscriptionDate(\DateTimeInterface $inscriptionDate): self
     {
         $this->inscriptionDate = $inscriptionDate;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|book[]
-     */
-    public function getCollection(): Collection
-    {
-        return $this->collection;
-    }
-
-    public function addCollection(book $collection): self
-    {
-        if (!$this->collection->contains($collection)) {
-            $this->collection[] = $collection;
-        }
-
-        return $this;
-    }
-
-    public function removeCollection(book $collection): self
-    {
-        $this->collection->removeElement($collection);
 
         return $this;
     }
@@ -238,5 +214,29 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     public function getUserIdentifier(): string
     {
         return $this->getMail();
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getCollection(): Collection
+    {
+        return $this->collection;
+    }
+
+    public function addCollection(Book $collection): self
+    {
+        if (!$this->collection->contains($collection)) {
+            $this->collection[] = $collection;
+        }
+
+        return $this;
+    }
+
+    public function removeCollection(Book $collection): self
+    {
+        $this->collection->removeElement($collection);
+
+        return $this;
     }
 }

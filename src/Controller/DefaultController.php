@@ -271,17 +271,16 @@ class DefaultController extends AbstractController
          */
         $user = $this->getUser();
         $gamesId = $userRepository->findGamesIdInUserCollection($user->getId());
-        /*
+
+
         $collec = [];
 
         foreach ($gamesId as $id)
         {
-            $collec= $bookRepository->findByUserandGame($user->getId(),$id);
+            $collec[]= $bookRepository->findByUserandGame($user->getId(),$id);
         }
 
-        die(var_dump($collec));  */
-
-        return $this->render('/pages/collection.html.twig',['test'=>$gamesId]);
+        return $this->render('/pages/collection.html.twig',['collec'=>$collec]);
     }
 
     /**

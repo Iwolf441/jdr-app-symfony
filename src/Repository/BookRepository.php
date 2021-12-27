@@ -41,7 +41,7 @@ class BookRepository extends ServiceEntityRepository
     public function findByUserandGame($idUser, $idGame)
     {
         $qb = $this->createQueryBuilder('b')
-            ->join('b.user','u')
+            ->join('b.users','u')
             ->join('b.game','g')
             ->where('g.id = :idGame and u.id = :idUser')
             ->setParameters(['idGame'=> $idGame,'idUser'=>$idUser]);
