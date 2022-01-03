@@ -20,27 +20,27 @@ class SecurityController extends AbstractController
     public function Register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserRegisterType::class,$user);
+        $form = $this->createForm(UserRegisterType::class, $user);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $user->setPassword($passwordHasher->hashPassword($user,$user->getPlainpassword()));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainpassword()));
             $user->setRoles(['ROLE_USER']);
             $user->setInscriptionDate(new \DateTime('now'));
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('app_login');
         }
-        return $this->render('security/register.html.twig',['registerForm' =>$form->createView()]);
+        return $this->render('security/register.html.twig', ['registerForm' => $form->createView()]);
     }
+
     /**
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -49,6 +49,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
+
     /**
      * @Route("/logout", name="app_logout")
      */

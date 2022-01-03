@@ -33,6 +33,7 @@ class DefaultController extends AbstractController
         $games = $gr->findtByVisibility(true);
         return $this->render('/pages/games.html.twig', ['games' => $games]);
     }
+
     /**
      * @Route("/profil",name="profil")
      */
@@ -41,8 +42,9 @@ class DefaultController extends AbstractController
         $user = $this->getUser();
         $bookCount = $userRepository->countBooksInUserCollection($user->getId());
         $gameCount = $userRepository->countGamesInUserCollection($user->getId());
-        return $this->render('/pages/profil.html.twig',['bookCount' => $bookCount,'gameCount' => $gameCount]);
+        return $this->render('/pages/profil.html.twig', ['bookCount' => $bookCount, 'gameCount' => $gameCount]);
     }
+
     /**
      * @Route("/admin",name="admin")
      */
@@ -60,12 +62,14 @@ class DefaultController extends AbstractController
      */
     public function viewGame(int $id, GameRepository $gameRepository): Response
     {
-
         $game = $gameRepository->find($id);
 
         if ($game == null) {
             throw new NotFoundHttpException("Jeu Inexistant");
+        } elseif ($game->getVisible() === false) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
+
         return $this->render('/pages/jeu.html.twig', ['game' => $game]);
     }
 
@@ -121,6 +125,8 @@ class DefaultController extends AbstractController
 
     public function removeGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $game = $gameRepository->find($id);
         $entityManager->remove($game);
         $entityManager->flush();
@@ -136,16 +142,17 @@ class DefaultController extends AbstractController
 
         if ($book == null) {
             throw new NotFoundHttpException("Livre inexistant");
+        } elseif ($book->getVisible() === false) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
 
         $commentary = new Commentary();
         $commentary->setBook($book);
-        $commentaryForm = $this->createForm(CommentaryType::class,$commentary);
+        $commentaryForm = $this->createForm(CommentaryType::class, $commentary);
 
         $commentaryForm->handleRequest($request);
 
-        if($commentaryForm->isSubmitted() && $commentaryForm->isValid())
-        {
+        if ($commentaryForm->isSubmitted() && $commentaryForm->isValid()) {
             /**
              * @var User $user
              */
@@ -154,7 +161,7 @@ class DefaultController extends AbstractController
             $commentary->setUser($user);
             $em->persist($commentary);
             $em->flush();
-            return $this->redirectToRoute('viewBook', ['id'=>$book->getId()]);
+            return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
         }
 
         return $this->render('/pages/livre.html.twig', ['book' => $book, 'commentaryForm' => $commentaryForm->createView()]);
@@ -222,6 +229,7 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
+
     /**
      * @Route("/signup",name="inscription")
      */
@@ -239,9 +247,8 @@ class DefaultController extends AbstractController
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $result = $gameRepository->findBySearch( $search);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $result = $gameRepository->findBySearch($search);
             return $this->render('/pages/games.html.twig', ['games' => $result]);
         }
         return $this->redirectToRoute('home');
@@ -251,7 +258,7 @@ class DefaultController extends AbstractController
      * @Route("/remove-comment/{id}/{idBook}",name="removeComment")
      */
 
-    public function removeComment(int $id,int $idBook, CommentaryRepository $commentaryRepository, EntityManagerInterface $em, BookRepository $bookRepository):Response
+    public function removeComment(int $id, int $idBook, CommentaryRepository $commentaryRepository, EntityManagerInterface $em, BookRepository $bookRepository): Response
     {
         $commentary = $commentaryRepository->find($id);
         $book = $bookRepository->find($idBook);
@@ -275,12 +282,11 @@ class DefaultController extends AbstractController
 
         $collec = [];
 
-        foreach ($gamesId as $id)
-        {
-            $collec[]= $bookRepository->findByUserandGame($user->getId(),$id);
+        foreach ($gamesId as $id) {
+            $collec[] = $bookRepository->findByUserandGame($user->getId(), $id);
         }
 
-        return $this->render('/pages/collection.html.twig',['collec'=>$collec]);
+        return $this->render('/pages/collection.html.twig', ['collec' => $collec]);
     }
 
     /**
@@ -293,7 +299,7 @@ class DefaultController extends AbstractController
         /**
          * @var User $user
          */
-        $user =$this->getUser();
+        $user = $this->getUser();
         $user->addCollection($book);
         $entityManager->flush();
         return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
@@ -303,13 +309,13 @@ class DefaultController extends AbstractController
      * @Route("/removeBookCollection/{id}",name="removeBookFromCollection")
      */
 
-    public function removeBookFromCollection (int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
+    public function removeBookFromCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
     {
         $book = $bookRepository->find($id);
         /**
          * @var User $user
          */
-        $user =$this->getUser();
+        $user = $this->getUser();
         $user->removeCollection($book);
         $entityManager->flush();
 
