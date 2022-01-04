@@ -36,11 +36,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     private $mail;
 
     /**
-     * @ORM\Column(type="string", length=400, nullable=true)
-     */
-    private $photo;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $inscriptionDate;
@@ -61,6 +56,11 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="users")
      */
     private $collection;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Photo::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $profilePicture;
 
     /**
      * @return mixed
@@ -119,18 +119,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     public function setMail(string $mail): self
     {
         $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?string $photo): self
-    {
-        $this->photo = $photo;
 
         return $this;
     }
@@ -236,6 +224,18 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     public function removeCollection(Book $collection): self
     {
         $this->collection->removeElement($collection);
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?Photo
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?Photo $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }

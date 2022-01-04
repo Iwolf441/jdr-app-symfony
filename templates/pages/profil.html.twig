@@ -8,11 +8,11 @@
              </div>
              <div class="card-body">
                  <div class="profile-photo">
-                     <img src="{{ asset("/images/profile/profile.png") }}" class="img-fluid rounded-circle" alt="">
+                     <img src="{% if app.user.profilePicture is null %} {{ asset("/images/anon.jpg") }}{% else %} {{ asset('uploads/'~app.user.profilePicture.url)}} {% endif %}" class="img-fluid rounded-circle" alt="">
                  </div>
                  <br>
                  <h4>Statistiques</h4>
-                 <a href="collection.html">Votre collection</a>
+                 <a href="{{ url('collection') }}">Votre collection</a>
                  <p> Vous avez {{ bookCount}} livres <br>
                      Vous avez {{ gameCount}} jeux</p>
                  <h4>Mes informations personelles</h4>

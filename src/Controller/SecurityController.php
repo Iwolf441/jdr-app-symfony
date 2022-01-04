@@ -26,6 +26,7 @@ class SecurityController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainpassword()));
             $user->setRoles(['ROLE_USER']);
             $user->setInscriptionDate(new \DateTime('now'));
+            $user->setProfilePicture(null);
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('app_login');
