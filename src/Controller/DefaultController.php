@@ -48,17 +48,13 @@ class DefaultController extends AbstractController
         $form = $this->createForm(UserParameterType::class, $user);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            if($passwordHasher->isPasswordValid($user,$user->getOldPassword()))
-            {
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($passwordHasher->isPasswordValid($user, $user->getOldPassword())) {
                 $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainpassword()));
                 $em->persist($user);
                 $em->flush();
                 return $this->redirectToRoute('profil');
-            }
-            else
-            {
+            } else {
                 $form->addError(new FormError('Ancien mot de passe incorrect'));
             }
         }
@@ -223,17 +219,24 @@ class DefaultController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
+
+            $cover = $photoUploader->uploadPhoto($form->get('cover'));
+            if(!$book->getCover() && $cover)
+            {
+                $book->setCover($cover);
+                $em->persist($book->getCover());
+            }
+           /* $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
             if ($book->getCover() !== null) {
                 $em->persist($book->getCover());
             }
+            */
             $em->persist($book);
             $em->flush();
             return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
         }
         return $this->render('/pages/formlivre.html.twig', ['bookForm' => $form->createView()]);
     }
-
     /**
      * @Route("/removeBook/{id}",name="removeBook")
      */
@@ -294,7 +297,7 @@ class DefaultController extends AbstractController
         $book = $bookRepository->find($idBook);
         $em->remove($commentary);
         $em->flush();
-        
+
         return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
     }
 
@@ -308,7 +311,6 @@ class DefaultController extends AbstractController
          */
         $user = $this->getUser();
         $gamesId = $userRepository->findGamesIdInUserCollection($user->getId());
-
 
         $collec = [];
 

@@ -20,7 +20,6 @@ class PhotoUploader
     public function uploadPhoto(FormInterface $photoField) : ?Photo
     {
         $imageFile = $photoField->get('image')->getData();
-        dump($imageFile);
         if ($imageFile) {
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
             // this is needed to safely include the file name as part of the URL
@@ -28,7 +27,6 @@ class PhotoUploader
             $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
             // Move the file to the directory where brochures are stored
-            dump($this->parameterBag->get('advert_images_path'));
             try {
                 $imageFile->move(
                     $this->parameterBag->get('advert_images_path'),
