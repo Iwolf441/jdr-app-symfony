@@ -209,6 +209,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      */
     public function getCollection(): Collection
     {
+
         return $this->collection;
     }
 
@@ -239,4 +240,6 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
         return $this;
     }
+
+
 }

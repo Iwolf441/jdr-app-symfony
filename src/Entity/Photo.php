@@ -22,11 +22,6 @@ class Photo
      */
     private $url;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="profilePicture", cascade={"persist", "remove"})
-     */
-    private $user;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -44,25 +39,4 @@ class Photo
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setProfilePicture(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getProfilePicture() !== $this) {
-            $user->setProfilePicture($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
 }

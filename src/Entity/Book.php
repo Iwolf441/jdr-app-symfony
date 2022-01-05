@@ -58,7 +58,6 @@ class Book
 
     /**
      * @ORM\OneToOne(targetEntity=Photo::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $cover;
 
@@ -202,7 +201,7 @@ class Book
         return $this->cover;
     }
 
-    public function setCover(Photo $cover): self
+    public function setCover(?Photo $cover): self
     {
         $this->cover = $cover;
 

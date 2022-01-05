@@ -7,7 +7,7 @@
                     <div class="card-header">
                         <h4 class="card-title">{{ book.title}}</h4>
                     </div>
-                    <img src="{{ asset('uploads/'~book.cover.url)}}" width="150px" height="300px" class="cover-book">
+                    <img src=" {% if book.cover is not null %}{{ asset('uploads/'~book.cover.url)}} {% else%} {{ asset('images/anon-book.jpg')}} {% endif %}" width="150px" height="300px" class="cover-book">
                     <div class="col-12">
                         <div>Genre : {{ book.category }}</div>
                         <div>Date de sortie : {{ book.releaseDate | date("d-m-y") }}</div>
@@ -21,6 +21,7 @@
 
                         {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
+                            <a href="{{ url('removeBook', {id: book.id}) }}"><i class="icon-trash"></i></a>
                         {% endif %}
                     </div>
                     <div class="card-body">

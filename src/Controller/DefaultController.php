@@ -60,7 +60,6 @@ class DefaultController extends AbstractController
     /**
      * @Route("/game/{id}",name="viewGame")
      */
-
     public function viewGame(int $id, GameRepository $gameRepository): Response
     {
         $game = $gameRepository->find($id);
@@ -78,7 +77,6 @@ class DefaultController extends AbstractController
      */
     public function addGame(Request $request, EntityManagerInterface $em): Response
     {
-
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
@@ -126,7 +124,6 @@ class DefaultController extends AbstractController
     /**
      * @Route("/remove-game/{id}",name="removeGame")
      */
-
     public function removeGame(int $id, GameRepository $gameRepository, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -183,7 +180,6 @@ class DefaultController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
-            dump($book->getCover());
             if ($book->getCover() !== null) {
                 $em->persist($book->getCover());
             }
@@ -200,15 +196,17 @@ class DefaultController extends AbstractController
     /**
      * @Route("/editBook/{id}",name="editBook")
      */
-
     public function editBook(int $id, Request $request, PhotoUploader $photoUploader, BookRepository $bookRepository, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         $book = $bookRepository->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
+            if ($book->getCover() !== null) {
+                $em->persist($book->getCover());
+            }
             $em->persist($book);
             $em->flush();
             return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
@@ -225,6 +223,7 @@ class DefaultController extends AbstractController
 
         $book = $bookRepository->find($id);
         $entityManager->remove($book);
+        $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
 
@@ -252,7 +251,6 @@ class DefaultController extends AbstractController
     /**
      * @Route("/search",name="search")
      */
-
     public function search(Request $request, GameRepository $gameRepository)
     {
         $search = new Search();
@@ -268,7 +266,6 @@ class DefaultController extends AbstractController
     /**
      * @Route("/remove-comment/{id}/{idBook}",name="removeComment")
      */
-
     public function removeComment(int $id, int $idBook, CommentaryRepository $commentaryRepository, EntityManagerInterface $em, BookRepository $bookRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -305,7 +302,6 @@ class DefaultController extends AbstractController
     /**
      * @Route("/addBookCollection/{id}",name="addBookToCollection")
      */
-
     public function addBookToCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
     {
         $book = $bookRepository->find($id);
@@ -321,10 +317,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/removeBookCollection/{id}",name="removeBookFromCollection")
      */
-
     public function removeBookFromCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
     {
-
         $book = $bookRepository->find($id);
         /**
          * @var User $user

@@ -24,7 +24,8 @@ class GameRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.visible = :visibility')
-            ->setParameter('visibility', $visibility);
+            ->setParameter('visibility', $visibility)
+            ->orderBy('a.name ');
 
         return $qb->getQuery()->getResult();
     }

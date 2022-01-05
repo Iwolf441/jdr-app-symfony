@@ -43,4 +43,3 @@ security:
         - { path: ^/profil, roles: ROLE_USER }
         - { path: ^/collection, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/remove-comment, roles: ROLE_ADMIN }
