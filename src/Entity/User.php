@@ -47,6 +47,24 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
     private $plainpassword;
 
+    private $oldPassword;
+
+    /**
+     * @return mixed
+     */
+    public function getOldPassword()
+    {
+        return $this->oldPassword;
+    }
+
+    /**
+     * @param mixed $oldPassword
+     */
+    public function setOldPassword($oldPassword): void
+    {
+        $this->oldPassword = $oldPassword;
+    }
+
     /**
      * @ORM\Column(type="json")
      */
@@ -58,7 +76,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     private $collection;
 
     /**
-     * @ORM\OneToOne(targetEntity=Photo::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Photo::class, cascade={"persist", "remove"})
      */
     private $profilePicture;
 

@@ -20,7 +20,7 @@
                  <div>Inscrit depuis {{ app.user.inscriptionDate |date("d/m/Y")}} </div>
                  <br>
                  <h5>Changer de mot de passe</h5>
-                 <form>
+                   {#  <form>
                      <div class="form-group row">
                          <label class="col-sm-2 col-form-label">Mot de passe actuel</label>
                          <div class="col-sm-10">
@@ -45,6 +45,8 @@
                          </div>
                      </div>
                  </form>
+                   #}
+                 {{ form(parametersForm) }}
              </div>
          </div>
      </div>

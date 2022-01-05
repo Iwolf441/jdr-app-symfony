@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\BookType;
 use App\Form\CommentaryType;
 use App\Form\GameType;
+use App\Form\UserParameterType;
 use App\Repository\BookRepository;
 use App\Repository\CommentaryRepository;
 use App\Repository\GameRepository;
@@ -18,9 +19,11 @@ use App\Search\SearchType;
 use App\Service\PhotoUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -37,12 +40,29 @@ class DefaultController extends AbstractController
     /**
      * @Route("/profil",name="profil")
      */
-    public function profil(UserRepository $userRepository): Response
+    public function profil(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         $bookCount = $userRepository->countBooksInUserCollection($user->getId());
         $gameCount = $userRepository->countGamesInUserCollection($user->getId());
-        return $this->render('/pages/profil.html.twig', ['bookCount' => $bookCount, 'gameCount' => $gameCount]);
+        $form = $this->createForm(UserParameterType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            if($passwordHasher->isPasswordValid($user,$user->getOldPassword()))
+            {
+                $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainpassword()));
+                $em->persist($user);
+                $em->flush();
+                return $this->redirectToRoute('profil');
+            }
+            else
+            {
+                $form->addError(new FormError('Ancien mot de passe incorrect'));
+            }
+        }
+        return $this->render('/pages/profil.html.twig', ['bookCount' => $bookCount, 'gameCount' => $gameCount, 'parametersForm' => $form->createView()]);
     }
 
     /**
