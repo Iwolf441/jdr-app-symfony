@@ -10,6 +10,7 @@ use App\Form\BookType;
 use App\Form\CommentaryType;
 use App\Form\GameType;
 use App\Form\UserParameterType;
+use App\Form\UserProfilePictureType;
 use App\Repository\BookRepository;
 use App\Repository\CommentaryRepository;
 use App\Repository\GameRepository;
@@ -40,12 +41,13 @@ class DefaultController extends AbstractController
     /**
      * @Route("/profil",name="profil")
      */
-    public function profil(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function profil(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, PhotoUploader $photoUploader): Response
     {
         $user = $this->getUser();
         $bookCount = $userRepository->countBooksInUserCollection($user->getId());
         $gameCount = $userRepository->countGamesInUserCollection($user->getId());
         $form = $this->createForm(UserParameterType::class, $user);
+        $form2 = $this->createForm(UserProfilePictureType::class,$user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -58,7 +60,20 @@ class DefaultController extends AbstractController
                 $form->addError(new FormError('Ancien mot de passe incorrect'));
             }
         }
-        return $this->render('/pages/profil.html.twig', ['bookCount' => $bookCount, 'gameCount' => $gameCount, 'parametersForm' => $form->createView()]);
+
+        $form2->handleRequest($request);
+        if($form2->isSubmitted() && $form2->isValid())
+        {
+            $user->setProfilePicture($photoUploader->uploadPhoto($form2->get('profilePicture')));
+            if ($user->getProfilePicture() !== null) {
+                $em->persist($user->getProfilePicture());
+            }
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('profil');
+        }
+
+        return $this->render('/pages/profil.html.twig', ['bookCount' => $bookCount, 'gameCount' => $gameCount, 'parametersForm' => $form->createView(), 'pictureForm'=>$form2->createView()]);
     }
 
     /**
@@ -226,17 +241,13 @@ class DefaultController extends AbstractController
                 $book->setCover($cover);
                 $em->persist($book->getCover());
             }
-           /* $book->setCover($photoUploader->uploadPhoto($form->get('cover')));
-            if ($book->getCover() !== null) {
-                $em->persist($book->getCover());
-            }
-            */
             $em->persist($book);
             $em->flush();
             return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
         }
         return $this->render('/pages/formlivre.html.twig', ['bookForm' => $form->createView()]);
     }
+
     /**
      * @Route("/removeBook/{id}",name="removeBook")
      */
