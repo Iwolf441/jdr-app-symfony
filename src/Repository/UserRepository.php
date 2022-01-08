@@ -19,32 +19,38 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function countBooksInUserCollection($userId)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(c.id)')
+            ->join('u.collection','c')
+            ->where('u.id= :userId')
+            ->setParameter('userId',$userId);
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $qb->getQuery()->getSingleScalarResult();
     }
-    */
+
+    public function countGamesInUserCollection($userId)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(distinct(g.id))')
+            ->join('u.collection','c')
+            ->join('c.game','g')
+            ->where('u.id= :userId')
+            ->setParameter('userId',$userId);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function findGamesIdInUserCollection($userId)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('distinct(g.id)')
+            ->join('u.collection','b')
+            ->where('u.id= :userId')
+            ->join('b.game','g')
+            ->setParameter('userId',$userId);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

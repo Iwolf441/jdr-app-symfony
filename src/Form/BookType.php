@@ -26,7 +26,7 @@ class BookType extends AbstractType
                 'months' => range(1, 12),
                 'days' => range(1, 31),
             ))
-            ->add('cover', PhotoType::class)
+            ->add('cover', PhotoType::class,['mapped' => false])
             ->add('category', EntityType::class, ['class' => Category::class])
             ->add('submit', SubmitType::class);
     }

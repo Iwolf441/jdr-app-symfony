@@ -1,5 +1,4 @@
 {% extends "layouts/user.html.twig" %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -8,96 +7,58 @@
                     <div class="card-header">
                         <h4 class="card-title">{{ book.title}}</h4>
                     </div>
-                    <img src="{{ asset('uploads/'~book.cover.url)}}" width="150px" height="300px" class="cover-book">
+                    <img src=" {% if book.cover is not null %}{{ asset('uploads/'~book.cover.url)}} {% else%} {{ asset('images/anon-book.jpg')}} {% endif %}" width="150px" height="300px" class="cover-book">
                     <div class="col-12">
                         <div>Genre : {{ book.category }}</div>
                         <div>Date de sortie : {{ book.releaseDate | date("d-m-y") }}</div>
                         <div>Editeur : {{ book.editor }}</div>
                         <p> Description</p>
                         <p>{{ book.description }}</p>
-                        <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('addBookToCollection',{id: book.id}) }}">Ajouter à ma collection.</a>
+                            <br>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ url('editBook',{id: book.id}) }}">Editer ?</a>
+                            <a href="{{ url('removeBook', {id: book.id}) }}"><i class="icon-trash"></i></a>
+                        {% endif %}
                     </div>
                     <div class="card-body">
                         <h4>Commentaires</h4>
                         <div class="recent-comment m-t-15">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/4.png"
-                                                     alt="..."></a>
+                            {% for comment in book.commentaries %}
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
+                                                         alt="..."></a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading text-success">{{comment.user.pseudo}}</h4>
+                                        <p>{{ comment.content }}</p>
+                                        <p class="comment-date">{{ comment.date | date("d/m/Y") }}</p>
+                                    </div>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ url('removeComment',{id: comment.id, idBook: book.id}) }}"> Supprimer</a>
+                                    {% endif %}
                                 </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-primary">john doe</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">10 min ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="./images/avatar/2.png"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-success">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla. Cras sit amet nibh libero, in
-                                        gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras sit amet nibh
-                                        libero, in gravida nulla.Cras sit amet nibh libero, in gravida nulla.Cras
-                                        sit amet nibh libero, in gravida nulla.Cras sit amet nibh libero, in gravida
-                                        nulla.Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">1 hour ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png") }}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-danger">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <div class="comment-date">Yesterday</div>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/4.png") }}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-primary">john doe</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">10 min ago</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-success">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <p class="comment-date">1 hour ago</p>
-                                </div>
-                            </div>
-                            <div class="media no-border">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object mr-3" src="{{ asset("/images/avatar/3.png")}}"
-                                                     alt="..."></a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading text-info">Mr. John</h4>
-                                    <p>Cras sit amet nibh libero, in gravida nulla.</p>
-                                    <div class="comment-date">Yesterday</div>
-                                </div>
-                            </div>
+                                {% else %}
+                                <p>Il n'y a pas de commentaires.</p>
+                            {% endfor %}
                         </div>
                         <h4>Ajouter un commentaire</h4>
-                        <form>
+                        <!--<form>
                             <div class="form-group">
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary mb-2">Ajouter</button>
                         </form>
+                        -->
+                        {% if is_granted('ROLE_USER') %}
+                          {{ form(commentaryForm) }}
+                            {% else %}
+                            <p>Vous devez être connectés pour pouvoir poster un commentaire.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

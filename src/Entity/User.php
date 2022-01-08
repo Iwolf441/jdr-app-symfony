@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Book;
+use App\Entity\Commentary;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -18,7 +20,6 @@ class User
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -35,34 +36,69 @@ class User
     private $mail;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $admin;
-
-    /**
-     * @ORM\Column(type="string", length=400, nullable=true)
-     */
-    private $photo;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $inscriptionDate;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=book::class)
-     */
-    private $collection;
 
     /**
      * @ORM\OneToMany(targetEntity=commentary::class, mappedBy="user")
      */
     private $commentaries;
 
+    private $plainpassword;
+
+    private $oldPassword;
+
+    /**
+     * @return mixed
+     */
+    public function getOldPassword()
+    {
+        return $this->oldPassword;
+    }
+
+    /**
+     * @param mixed $oldPassword
+     */
+    public function setOldPassword($oldPassword): void
+    {
+        $this->oldPassword = $oldPassword;
+    }
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="users")
+     */
+    private $collection;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Photo::class, cascade={"persist", "remove"})
+     */
+    private $profilePicture;
+
+    /**
+     * @return mixed
+     */
+    public function getPlainpassword()
+    {
+        return $this->plainpassword;
+    }
+    /**
+     * @param mixed $plainpassword
+     */
+    public function setPlainpassword($plainpassword): void
+    {
+        $this->plainpassword = $plainpassword;
+    }
+
     public function __construct()
     {
-        $this->collection = new ArrayCollection();
         $this->commentaries = new ArrayCollection();
+        $this->collection = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,7 +122,6 @@ class User
     {
         return $this->password;
     }
-
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -106,30 +141,6 @@ class User
         return $this;
     }
 
-    public function getAdmin(): ?bool
-    {
-        return $this->admin;
-    }
-
-    public function setAdmin(bool $admin): self
-    {
-        $this->admin = $admin;
-
-        return $this;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?string $photo): self
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
     public function getInscriptionDate(): ?\DateTimeInterface
     {
         return $this->inscriptionDate;
@@ -141,31 +152,7 @@ class User
 
         return $this;
     }
-
-    /**
-     * @return Collection|book[]
-     */
-    public function getCollection(): Collection
-    {
-        return $this->collection;
-    }
-
-    public function addCollection(book $collection): self
-    {
-        if (!$this->collection->contains($collection)) {
-            $this->collection[] = $collection;
-        }
-
-        return $this;
-    }
-
-    public function removeCollection(book $collection): self
-    {
-        $this->collection->removeElement($collection);
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection|commentary[]
      */
@@ -195,4 +182,82 @@ class User
 
         return $this;
     }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        $this->plainpassword=null;
+    }
+
+    public function getUsername():string
+    {
+        return $this->pseudo;
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
+    
+    public function getUserIdentifier(): string
+    {
+        return $this->getMail();
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getCollection(): Collection
+    {
+
+        return $this->collection;
+    }
+
+    public function addCollection(Book $collection): self
+    {
+        if (!$this->collection->contains($collection)) {
+            $this->collection[] = $collection;
+        }
+
+        return $this;
+    }
+
+    public function removeCollection(Book $collection): self
+    {
+        $this->collection->removeElement($collection);
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?Photo
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?Photo $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
+
+        return $this;
+    }
+
+
 }

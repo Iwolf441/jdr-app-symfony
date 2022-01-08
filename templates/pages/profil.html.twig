@@ -4,23 +4,23 @@
      <div class="container-fluid">
          <div class="card">
              <div class="card-header">
-                 <h4 class="card-title">Profil de Jean-Charles</h4>
+                 <h4 class="card-title">Profil de {{ app.user.pseudo}}</h4>
              </div>
              <div class="card-body">
                  <div class="profile-photo">
-                     <img src="{{ asset("/images/profile/profile.png") }}" class="img-fluid rounded-circle" alt="">
+                     <img src="{% if app.user.profilePicture is null %} {{ asset("/images/anon.jpg") }}{% else %} {{ asset('uploads/'~app.user.profilePicture.url)}} {% endif %}" class="img-fluid rounded-circle" alt="">
                  </div>
                  <br>
                  <h4>Statistiques</h4>
-                 <a href="collection.html">Votre collection</a>
-                 <p> Vous avez 5 livres <br>
-                     Vous avez 3 jeux</p>
-                 <h4>Vos informations personelles</h4>
-                 <div>Adresse mail : jean.charles@gmail.com</div>
-                 <div>Inscrit depuis le 01/01/2020</div>
+                 <a href="{{ url('collection') }}">Votre collection</a>
+                 <p> Vous avez {{ bookCount}} livres <br>
+                     Vous avez {{ gameCount}} jeux</p>
+                 <h4>Mes informations personelles</h4>
+                 <div>Adresse mail : {{ app.user.mail }}</div>
+                 <div>Inscrit depuis {{ app.user.inscriptionDate |date("d/m/Y")}} </div>
                  <br>
                  <h5>Changer de mot de passe</h5>
-                 <form>
+                   {#  <form>
                      <div class="form-group row">
                          <label class="col-sm-2 col-form-label">Mot de passe actuel</label>
                          <div class="col-sm-10">
@@ -45,8 +45,11 @@
                          </div>
                      </div>
                  </form>
+                   #}
+                 {{ form(parametersForm) }}
+                 <h5>Changer d'image de profil</h5>
+                 {{ form(pictureForm) }}
              </div>
          </div>
      </div>
-
  {% endblock content %}

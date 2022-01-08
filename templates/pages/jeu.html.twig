@@ -11,7 +11,8 @@
                         <h2>Description</h2>
                         <p>{{ game.description }}</p>
                         <h2>Livres</h2>
-                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook",{gameId: game.id}) }}">Ajoutez-le !</a></p>
+                        <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook",{gameId: game.id}) }}">Ajoutez-le
+                                !</a></p>
                         <div class="table-responsive">
                             <table class="table table-responsive-sm">
                                 <thead>
@@ -22,15 +23,17 @@
                                 </thead>
                                 <tbody>
                                 {% for book in game.books %}
-                                    <tr>
-                                        <td><a href="{{ url('viewBook',{id: book.id}) }}">{{ book.title }}</a></td>
-                                        <td>{{ book.category }}</td>
-                                    </tr>
+                                    {% if book.visible == true %}
+                                        <tr>
+                                            <td><a href="{{ url('viewBook',{id: book.id}) }}">{{ book.title }}</a></td>
+                                            <td>{{ book.category }}</td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
-                        <a href="{{ url('editGame',{id: game.id})}}">Editer</a>
+                        <a href="{{ url('editGame',{id: game.id}) }}">Editer</a>
                     </div>
                 </div>
             </div>

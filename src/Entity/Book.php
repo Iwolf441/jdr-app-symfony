@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
+
 class Book
 {
     /**
@@ -57,7 +58,6 @@ class Book
 
     /**
      * @ORM\OneToOne(targetEntity=Photo::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $cover;
 
@@ -67,9 +67,16 @@ class Book
      */
     private $category;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="collection")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->commentaries = new ArrayCollection();
+        $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,7 +167,6 @@ class Book
 
         return $this;
     }
-
     /**
      * @return Collection|commentary[]
      */
@@ -187,7 +193,6 @@ class Book
                 $commentary->setBook(null);
             }
         }
-
         return $this;
     }
 
@@ -196,10 +201,46 @@ class Book
         return $this->cover;
     }
 
-    public function setCover(Photo $cover): self
+    public function setCover(?Photo $cover): self
     {
         $this->cover = $cover;
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeCollection($this);
+        }
+
+        return $this;
+    }
+
 }
