@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\Commentary;
 use App\Entity\Game;
 use App\Entity\User;
+use App\Form\BookFilterType;
 use App\Form\BookType;
 use App\Form\CommentaryType;
 use App\Form\GameType;
@@ -15,6 +17,7 @@ use App\Repository\BookRepository;
 use App\Repository\CommentaryRepository;
 use App\Repository\GameRepository;
 use App\Repository\UserRepository;
+use App\Search\Filter;
 use App\Search\Search;
 use App\Search\SearchType;
 use App\Service\PhotoUploader;
@@ -91,7 +94,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/game/{id}",name="viewGame")
      */
-    public function viewGame(int $id, GameRepository $gameRepository): Response
+    public function viewGame(int $id, GameRepository $gameRepository, Request $request,BookRepository $bookRepository): Response
     {
         $game = $gameRepository->find($id);
 
@@ -100,7 +103,17 @@ class DefaultController extends AbstractController
         } elseif ($game->getVisible() === false) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
-        return $this->render('/pages/jeu.html.twig', ['game' => $game]);
+        $books = $game->getBooks();
+        $filter =new Filter();
+
+        $form = $this->createForm(BookFilterType::class,$filter);
+        $form->handleRequest($request);
+        if($form->isSubmitted())
+        {
+            $results= $bookRepository->findByFilter($filter,$game->getId());
+            $books= $results;
+        }
+        return $this->render('/pages/jeu.html.twig', ['game' => $game, 'books' => $books,'filterForm'=> $form->createView()]);
     }
 
     /**
@@ -164,7 +177,6 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('admin');
     }
-
     /**
      * @Route("/book/{id}",name="viewBook")
      */

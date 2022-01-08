@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Search\Filter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,12 +42,22 @@ class BookRepository extends ServiceEntityRepository
     public function findByUserandGame($idUser, $idGame)
     {
         $qb = $this->createQueryBuilder('b')
-            ->join('b.users','u')
-            ->join('b.game','g')
+            ->join('b.users', 'u')
+            ->join('b.game', 'g')
             ->where('g.id = :idGame and u.id = :idUser')
-            ->setParameters(['idGame'=> $idGame,'idUser'=>$idUser]);
+            ->setParameters(['idGame' => $idGame, 'idUser' => $idUser]);
 
         return $qb->getQuery()->getResult();
     }
 
+    public function findByFilter(Filter $filter, $idGame)
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->join('b.category','c')
+            ->join('b.game','g')
+            ->where('g.id = :idGame and c.id = :idCategory')
+            ->setParameters(['idGame' => $idGame, 'idCategory'=>$filter->getCategory()->getId()]);
+
+        return $qb->getQuery()->getResult();
+    }
 }

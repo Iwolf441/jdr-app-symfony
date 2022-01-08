@@ -30,7 +30,7 @@
                             {% for comment in book.commentaries %}
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="#"><img class="media-object mr-3" src="{{ asset("./images/avatar/2.png")}}"
+                                        <a href="#"><img class="media-object mr-3" src="{% if comment.user.profilePicture is null %} {{ asset("/images/anon.jpg") }}{% else %} {{ asset('uploads/'~comment.user.profilePicture.url)}} {% endif %}"
                                                          alt="..."></a>
                                     </div>
                                     <div class="media-body">

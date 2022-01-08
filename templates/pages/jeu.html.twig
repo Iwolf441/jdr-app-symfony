@@ -11,6 +11,8 @@
                         <h2>Description</h2>
                         <p>{{ game.description }}</p>
                         <h2>Livres</h2>
+                        {{ form(filterForm) }}
+                        <a href="{{ url('viewGame',{id: game.id}) }}">Supprimer le filter</a>
                         <p>Pas dans la liste ? <a class="text-primary" href="{{ url("addBook",{gameId: game.id}) }}">Ajoutez-le
                                 !</a></p>
                         <div class="table-responsive">
@@ -22,7 +24,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for book in game.books %}
+                                {% for book in books %}
                                     {% if book.visible == true %}
                                         <tr>
                                             <td><a href="{{ url('viewBook',{id: book.id}) }}">{{ book.title }}</a></td>
