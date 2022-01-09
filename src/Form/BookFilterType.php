@@ -15,7 +15,7 @@ class BookFilterType extends AbstractType
     {
         $builder
             ->add('category', EntityType::class, ['class' => Category::class])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, ['label' => 'filtrer']);
     }
     public function configureOptions(OptionsResolver $resolver): void
     {

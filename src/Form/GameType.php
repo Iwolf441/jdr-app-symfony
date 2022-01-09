@@ -14,10 +14,11 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description', TextareaType::class)
-            ->add('submit',SubmitType::class);
+            ->add('name',null, ['label' => 'Nom'])
+            ->add('description', TextareaType::class, ['label'=> 'Description'])
+            ->add('submit',SubmitType::class, ['label'=> 'Envoyer']);
     }
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

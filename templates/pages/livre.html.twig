@@ -5,9 +5,10 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ book.title}}</h4>
+                        <h4 class="card-title">{{ book.title }}</h4>
                     </div>
-                    <img src=" {% if book.cover is not null %}{{ asset('uploads/'~book.cover.url)}} {% else%} {{ asset('images/anon-book.jpg')}} {% endif %}" width="150px" height="300px" class="cover-book">
+                    <img alt ="Book cover" src=" {% if book.cover is not null %}{{ asset('uploads/'~book.cover.url) }} {% else %} {{ asset('images/anon-book.jpg') }} {% endif %}"
+                         width="150px" height="300px" class="cover-book">
                     <div class="col-12">
                         <div>Genre : {{ book.category }}</div>
                         <div>Date de sortie : {{ book.releaseDate | date("d-m-y") }}</div>
@@ -15,8 +16,12 @@
                         <p> Description</p>
                         <p>{{ book.description }}</p>
                         {% if is_granted('ROLE_USER') %}
-                            <a href="{{ url('addBookToCollection',{id: book.id}) }}">Ajouter à ma collection.</a>
-                            <br>
+                            {% if book in app.user.collection %}
+                                <a> Retirer le livre de sa collection !</a>
+                                <br>
+                            {% else %}
+                                <a href="{{ url('addBookToCollection',{id: book.id}) }}">Ajouter à ma collection.</a>
+                            {% endif %}
                         {% endif %}
 
                         {% if is_granted('ROLE_ADMIN') %}
@@ -30,19 +35,21 @@
                             {% for comment in book.commentaries %}
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="#"><img class="media-object mr-3" src="{% if comment.user.profilePicture is null %} {{ asset("/images/anon.jpg") }}{% else %} {{ asset('uploads/'~comment.user.profilePicture.url)}} {% endif %}"
+                                        <a href="#"><img class="media-object mr-3"
+                                                         src="{% if comment.user.profilePicture is null %} {{ asset("/images/anon.jpg") }}{% else %} {{ asset('uploads/'~comment.user.profilePicture.url) }} {% endif %}"
                                                          alt="..."></a>
                                     </div>
                                     <div class="media-body">
-                                        <h4 class="media-heading text-success">{{comment.user.pseudo}}</h4>
+                                        <h4 class="media-heading text-success">{{ comment.user.pseudo }}</h4>
                                         <p>{{ comment.content }}</p>
                                         <p class="comment-date">{{ comment.date | date("d/m/Y") }}</p>
                                     </div>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        <a href="{{ url('removeComment',{id: comment.id, idBook: book.id}) }}"> Supprimer</a>
+                                        <a href="{{ url('removeComment',{id: comment.id, idBook: book.id}) }}">
+                                            Supprimer</a>
                                     {% endif %}
                                 </div>
-                                {% else %}
+                            {% else %}
                                 <p>Il n'y a pas de commentaires.</p>
                             {% endfor %}
                         </div>
@@ -55,8 +62,8 @@
                         </form>
                         -->
                         {% if is_granted('ROLE_USER') %}
-                          {{ form(commentaryForm) }}
-                            {% else %}
+                            {{ form(commentaryForm) }}
+                        {% else %}
                             <p>Vous devez être connectés pour pouvoir poster un commentaire.</p>
                         {% endif %}
                     </div>

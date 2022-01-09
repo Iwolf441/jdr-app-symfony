@@ -18,9 +18,9 @@
                                  </thead>
                                  <tbody>
                                  {% for game in games %}
-                                 <tr>
-                                     <td><a href="{{url('viewGame',{id: game.id})}}">{{ game.name }}</a></td>
-                                 </tr>
+                                     <tr>
+                                         <td><a href="{{ url('viewGame',{id: game.id}) }}">{{ game.name }}</a></td>
+                                     </tr>
                                  {% else %}
                                      <h2>Pas trouvé !</h2>
                                  {% endfor %}
@@ -32,4 +32,4 @@
              </div>
          </div>
      </div>
-    {% endblock content %}
+ {% endblock content %}
