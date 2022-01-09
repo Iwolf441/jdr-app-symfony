@@ -5,8 +5,13 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ game.name }}</h4>
+                        <h1 >{{ game.name }}</h1>
                     </div>
+                    {% for message in app.flashes('addBookSuccess')%}
+                        <div class="alert alert-success" role="alert">
+                            {{message}}
+                        </div>
+                    {% endfor %}
                     <div class="card-body">
                         <h2>Description</h2>
                         <p>{{ game.description }}</p>

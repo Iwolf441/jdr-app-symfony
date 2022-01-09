@@ -29,8 +29,13 @@ class SecurityController extends AbstractController
             $user->setProfilePicture(null);
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash(
+                'registerSuccess',
+                'Inscription avec succès! Vous pouvez désormais vous connecter'
+            );
             return $this->redirectToRoute('app_login');
         }
+
         return $this->render('security/register.html.twig', ['registerForm' => $form->createView()]);
     }
     /**

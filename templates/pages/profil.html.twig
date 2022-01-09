@@ -3,6 +3,11 @@
  {% block content %}
      <div class="container-fluid">
          <div class="card">
+             {% for message in app.flashes('profilChangeSuccess') %}
+                 <div class="alert alert-success" role="alert">
+                     {{message}}
+                 </div>
+             {% endfor %}
              <div class="card-header">
                  <h4 class="card-title">Profil de {{ app.user.pseudo}}</h4>
              </div>

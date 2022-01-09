@@ -66,6 +66,10 @@ class DefaultController extends AbstractController
                 $user->setPassword($passwordHasher->hashPassword($user, $user->getPlainpassword()));
                 $em->persist($user);
                 $em->flush();
+                $this->addFlash(
+                    'profilChangeSuccess',
+                    'Mot de passe changer avec succès !'
+                );
                 return $this->redirectToRoute('profil');
             } else {
                 $form->addError(new FormError('Ancien mot de passe incorrect'));
@@ -81,6 +85,10 @@ class DefaultController extends AbstractController
             }
             $em->persist($user);
             $em->flush();
+            $this->addFlash(
+                'profilChangeSuccess',
+                'Photo changée avec succès !'
+            );
             return $this->redirectToRoute('profil');
         }
 
@@ -239,7 +247,12 @@ class DefaultController extends AbstractController
             $game->addBook($book);
             $em->persist($game);
             $em->flush();
-            return $this->redirectToRoute('home');
+            $this->addFlash(
+                'addBookSuccess',
+                'Merci pour votre ajout ! Il sera visible lorsqu un admin l aura validé !'
+            );
+
+            return $this->redirectToRoute('viewGame',['id'=>$gameId]);
         }
         return $this->render('/pages/formlivre.html.twig', ['bookForm' => $form->createView()]);
     }

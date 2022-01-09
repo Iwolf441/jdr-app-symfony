@@ -1,9 +1,15 @@
 {% extends 'layouts/offline.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block content %}
 
+    {% for message in app.flashes('registerSuccess') %}
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+    {% endfor %}
+    
     <form method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -37,7 +43,7 @@
         </div>
         #}
         <button class="btn btn-lg btn-primary" type="submit" style="margin-top:15px">
-            Sign in
+            Se connecter
         </button>
     </form>
     <div class="new-account mt-3">
@@ -45,6 +51,6 @@
     </div>
 
     <div>
-        < <a href="{{ url('home') }}">Retour à l'accueil</a>
+        <<a href="{{ url('home') }}">Retour à l'accueil</a>
     </div>
 {% endblock content %}

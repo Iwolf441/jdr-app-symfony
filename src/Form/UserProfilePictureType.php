@@ -16,7 +16,6 @@ class UserProfilePictureType extends AbstractType
 
             ->add('profilePicture',PhotoType::class,['label' =>'Image de profil','help'=>'Laissez vide pour revenir à la photo par défaut !'])
             ->add('submit', SubmitType::class);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

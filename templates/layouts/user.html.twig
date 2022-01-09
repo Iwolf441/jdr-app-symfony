@@ -69,8 +69,10 @@
                                  <div class="dropdown-menu p-0 m-0">
                                      {% set searchForm = getSearchForm() %}
                                      {{ form_start(searchForm) }}
+                                     <div class="form-check form-check-inline">
                                      {{ form_widget(searchForm.keyword,{'attr': {'class': 'form-control'}}) }}
-                                     {{ form_widget(searchForm.submit,{'attr': {'class': 'form-control'}}) }}
+                                     {{ form_widget(searchForm.submit,{'attr': {'class': 'btn btn-primary'}}) }}
+                                     </div>
                                      {{ form_end(searchForm)}}
                                  </div>
                              </div>

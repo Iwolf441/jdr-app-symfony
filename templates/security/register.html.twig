@@ -1,4 +1,9 @@
 {% extends 'layouts/offline.html.twig' %}
-{% block body %}
+{% block content %}
+
 {{ form(registerForm) }}
-{% endblock body %}
+    <p>Déja inscrit ? <a class="text-primary" href="{{ url('app_login') }}">Se connecter</a></p>
+    <div>
+        < <a href="{{ url('home') }}">Retour à l'accueil</a>
+    </div>
+{% endblock content %}
