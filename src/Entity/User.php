@@ -7,10 +7,14 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * * @UniqueEntity(fields="mail", message="Mail déja utilisée !")
+ * @UniqueEntity(fields="pseudo", message="Pseudonyme deja utilisé !")
  */
 class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
@@ -21,7 +25,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $pseudo;
 
@@ -31,7 +35,9 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $mail;
 
@@ -106,7 +112,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
         return $this->id;
     }
 
-    public function getPseudo(): ?string
+    public function getPseudo(): string
     {
         return $this->pseudo;
     }
@@ -129,7 +135,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getMail(): string
     {
         return $this->mail;
     }
