@@ -22,6 +22,7 @@ use App\Search\Search;
 use App\Search\SearchType;
 use App\Service\PhotoUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,9 +36,16 @@ class DefaultController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function home(GameRepository $gr): Response
+    public function home( Request $request,GameRepository $gr, PaginatorInterface $paginator): Response
     {
         $games = $gr->findtByVisibility(true);
+
+        $games =  $paginator->paginate(
+            $games, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
         return $this->render('/pages/games.html.twig', ['games' => $games]);
     }
 
@@ -297,13 +305,18 @@ class DefaultController extends AbstractController
     /**
      * @Route("/search",name="search")
      */
-    public function search(Request $request, GameRepository $gameRepository)
+    public function search(Request $request, GameRepository $gameRepository, PaginatorInterface $paginator)
     {
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $result = $gameRepository->findBySearch($search);
+            $result = $paginator->paginate(
+                $result, /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
             return $this->render('/pages/games.html.twig', ['games' => $result]);
         }
         return $this->redirectToRoute('home');
