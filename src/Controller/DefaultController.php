@@ -157,6 +157,12 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $game = $gameRepository->find($id);
+        if ($game == null) {
+            throw new NotFoundHttpException("Jeu Inexistant");
+        } elseif ($game->getVisible() === false) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
         $game->getId();
@@ -176,6 +182,9 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $game = $gameRepository->find($id);
+        if ($game == null) {
+            throw new NotFoundHttpException("Jeu Inexistant");
+        }
         $game->setVisible(true);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
@@ -189,6 +198,10 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $game = $gameRepository->find($id);
+        if ($game == null) {
+            throw new NotFoundHttpException("Jeu Inexistant");
+        }
+
         $entityManager->remove($game);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
@@ -205,7 +218,6 @@ class DefaultController extends AbstractController
         } elseif ($book->getVisible() === false) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
-
         $commentary = new Commentary();
         $commentary->setBook($book);
         $commentaryForm = $this->createForm(CommentaryType::class, $commentary);
@@ -233,6 +245,10 @@ class DefaultController extends AbstractController
     public function addBook(int $gameId, Request $request, PhotoUploader $photoUploader, GameRepository $gameRepository, EntityManagerInterface $em): Response
     {
         $game = $gameRepository->find($gameId);
+        if ($game == null) {
+            throw new NotFoundHttpException("Jeu Inexistant");
+        }
+
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -264,6 +280,9 @@ class DefaultController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre Inexistant");
+        }
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -289,6 +308,9 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre Inexistant");
+        }
         $entityManager->remove($book);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
@@ -302,6 +324,10 @@ class DefaultController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre Inexistant");
+        }
+
         $book->setVisible(true);
         $entityManager->flush();
         return $this->redirectToRoute('admin');
@@ -344,6 +370,9 @@ class DefaultController extends AbstractController
 
         $commentary = $commentaryRepository->find($id);
         $book = $bookRepository->find($idBook);
+        if ($book || $commentary == null) {
+            throw new NotFoundHttpException("Livre ou commentaire Inexistant");
+        }
         $em->remove($commentary);
         $em->flush();
 
@@ -376,6 +405,9 @@ class DefaultController extends AbstractController
     public function addBookToCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
     {
         $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre Inexistant");
+        }
         /**
          * @var User $user
          */
@@ -391,6 +423,9 @@ class DefaultController extends AbstractController
     public function removeBookFromCollection(int $id, BookRepository $bookRepository, EntityManagerInterface $entityManager): Response
     {
         $book = $bookRepository->find($id);
+        if ($book == null) {
+            throw new NotFoundHttpException("Livre Inexistant");
+        }
         /**
          * @var User $user
          */
