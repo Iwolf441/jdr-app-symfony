@@ -416,7 +416,7 @@ class DefaultController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('viewBook', ['id' => $book->getId()]);
     }
-
+    
     /**
      * @Route("/removeBookCollection/{id}",name="removeBookFromCollection")
      */
