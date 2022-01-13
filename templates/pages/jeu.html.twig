@@ -40,8 +40,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ url('editGame',{id: game.id}) }}">Editer</a>
                         <a href="{{ url('removeGame',{id: game.id}) }}"><i class="icon-trash"></i></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

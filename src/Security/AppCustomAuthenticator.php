@@ -32,7 +32,6 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): PassportInterface
     {
         $mail = $request->request->get('mail', '');
-
         $request->getSession()->set(Security::LAST_USERNAME, $mail);
 
         return new Passport(
@@ -56,5 +55,11 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    public function supports(Request $request): bool
+    {
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+            && $request->isMethod('POST');
     }
 }

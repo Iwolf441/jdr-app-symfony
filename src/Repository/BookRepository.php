@@ -24,7 +24,8 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.visible = :visibility')
-            ->setParameter('visibility', $visibility);
+            ->setParameter('visibility', $visibility)
+            ->orderBy('a.title ');
 
         return $qb->getQuery()->getResult();
     }

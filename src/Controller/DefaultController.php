@@ -119,6 +119,7 @@ class DefaultController extends AbstractController
         } elseif ($game->getVisible() === false) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
+
         $books = $game->getBooks();
         $filter =new Filter();
 
